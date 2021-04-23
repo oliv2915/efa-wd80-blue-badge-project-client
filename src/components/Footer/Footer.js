@@ -4,10 +4,10 @@ export default function Footer() {
 
 
     return (
-        <header>
+        <footer>
             <p>
                 &copy; {new Date().getFullYear()} - MealBox
             </p>
-        </header>
+        </footer>
     )
 }

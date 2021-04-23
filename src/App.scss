@@ -1,7 +1,25 @@
-
+$theme-colors: (
+    "primary": #E66D54,
+    "secondary": #CFCD37,
+    "danager": #993C29,
+    "warning": #E6AD3A,
+    "light": #F2B6A9
+);
+$body-color: #444E66;
+$font-family-sans-serif: "Montserrat", sans-serif;
 /*
-    All boostrap style overrides must be placed
-    before this import statement. If not placed before
-    but after, bootstrap styles will take affect.
+All boostrap style overrides must be placed
+before this import statement. If not placed before
+but after, bootstrap styles will take affect.
 */
 @import "~bootstrap/scss/bootstrap.scss";
+
+/*
+    Navbar Styles
+*/
+.navbar {
+    height: 80px;
+}
+.nav-item {
+    margin-right: 5px;
+}

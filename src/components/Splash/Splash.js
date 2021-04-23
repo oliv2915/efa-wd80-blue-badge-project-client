@@ -1,11 +1,12 @@
-import React from "react";
+import React, {useContext, useEffect} from "react";
+import MainContent from "./MainContent/MainContent";
 
 export default function Splash() {
 
 
     return (
-        <main>
-            Splash Component
-        </main>
+        <>
+            <MainContent />
+        </>
     )
 }

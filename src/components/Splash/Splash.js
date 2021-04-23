@@ -1,12 +1,12 @@
-import React, {useContext, useEffect} from "react";
-import MainContent from "./MainContent/MainContent";
+import React from "react";
+import RecipeList from "../RecipeList/RecipeList";;
 
-export default function Splash() {
+export default function Splash({token}) {
 
 
     return (
         <>
-            <MainContent />
+            <RecipeList />
         </>
     )
 }

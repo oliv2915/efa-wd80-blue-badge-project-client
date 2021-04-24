@@ -19,7 +19,7 @@ export default function Login({updateToken}) {
                 headers: new Headers({"Content-Type":"application/json"})
             }).then(res => res.json()).then(data => {
                 updateToken(data.sessionToken);
-                history.push("/user/profile");
+                history.push("/profile");
             });
         } catch (err) {
             console.log(err);

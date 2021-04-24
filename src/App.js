@@ -6,6 +6,7 @@ import Splash from "./components/Splash/Splash";
 import Footer from "./components/Footer/Footer";
 import Signup from "./components/Signup/Signup";
 import Login from "./components/Login/Login";
+import Profile from "./components/Profile/Profile";
 import {Container} from "reactstrap";
 import {useHistory} from "react-router-dom";
 
@@ -43,6 +44,9 @@ function App() {
           </Route>
           <Route path="/login">
             <Login updateToken={updateToken}/>
+          </Route>
+          <Route path="/profile">
+            <Profile token={sessionToken} />
           </Route>
         </Switch>
         <Footer />

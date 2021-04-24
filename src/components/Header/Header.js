@@ -1,9 +1,11 @@
-import React from "react";
+import React, {useContext} from "react";
 import Logo from "../../assets/logo.svg"
 import {LinkContainer} from "react-router-bootstrap";
 import {Button, Navbar, NavbarBrand, Nav, NavItem} from "reactstrap";
+import UserContext from "../../context/UserContext";
 
-export default function Header({token, logout}) {
+export default function Header() {
+    const userContext = useContext(UserContext)
     
     return (
         <header>
@@ -15,10 +17,10 @@ export default function Header({token, logout}) {
                </LinkContainer>
                 <Nav>
                     {
-                        token ? 
+                        userContext.isAuth ? 
                                 <>
                                     <NavItem className="nav-item"><LinkContainer to="/profile"><Button>Profile</Button></LinkContainer></NavItem>
-                                    <NavItem className="nav-item"><Button onClick={logout}>Logout</Button></NavItem>
+                                    <NavItem className="nav-item"><Button onClick={()=> userContext.setToken(null)}>Logout</Button></NavItem>
                                 </>
                             : 
                                 <>

@@ -1,9 +1,11 @@
 import React, {useState, useContext} from "react";
 import {Col, Form, Row, FormGroup, Label, Input, Button, Container} from "reactstrap";
 import {useHistory} from "react-router-dom"
+import UserContext from "../../context/UserContext";
 
-export default function SignUp({updateToken}) {
+export default function SignUp() {
     const history = useHistory();
+    const userContext = useContext(UserContext);
 
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -31,14 +33,14 @@ export default function SignUp({updateToken}) {
                 headers: new Headers({"Content-Type":"application/json"})
             }).then(res => res.json())
             // updateToken
-            updateToken(createdUser.sessionToken);
+            userContext.setToken(createdUser.sessionToken);
             // if we do not have an image, redirect to user profile
             if (!profileImage) return history.push("/profile");
             // proccess image upload
             const formData = new FormData();
             formData.append("image", profileImage);
             // upload image
-            const uploadResult = await fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/upload?type=user`, {
+            await fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/upload?type=user`, {
                 method: "POST",
                 body: formData,
                 headers: new Headers({
@@ -46,7 +48,7 @@ export default function SignUp({updateToken}) {
                 })
             }).then(res => res.json());
             // redirect to profile
-            history.push("/profile");
+            return history.push("/profile");
         } catch (err) {
             console.log(err);
         }

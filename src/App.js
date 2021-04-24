@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import { Switch, Route } from "react-router-dom";
 import "./App.scss";
 import Header from "./components/Header/Header";
@@ -8,49 +8,32 @@ import Signup from "./components/Signup/Signup";
 import Login from "./components/Login/Login";
 import Profile from "./components/Profile/Profile";
 import {Container} from "reactstrap";
-import {useHistory} from "react-router-dom";
+import {UserContextProvider} from "./context/UserContext";
 
 function App() {
-  const [sessionToken, setSessionToken] = useState("");
-  const history = useHistory();
-
-  useEffect(() => {
-    if (sessionStorage.getItem("token")) {
-      setSessionToken(sessionStorage.getItem("token"));
-    }
-  }, []);
-
-  const updateToken = (token) => {
-    setSessionToken(token);
-    sessionStorage.setItem("token", token);
-  };
-
-
-  const logout = () => {
-    setSessionToken("");
-    sessionStorage.removeItem("token");
-    history.push("/");
-  };
+  
 
   return (
+    <UserContextProvider>
       <Container fluid>
-        <Header token={sessionToken} logout={logout} />
+        <Header/>
         <Switch>
           <Route exact path="/">
-            <Splash token={sessionToken} />
+            <Splash/>
           </Route>
           <Route path="/signup">
-            <Signup updateToken={updateToken}/>
+            <Signup/>
           </Route>
           <Route path="/login">
-            <Login updateToken={updateToken}/>
+            <Login/>
           </Route>
           <Route path="/profile">
-            <Profile token={sessionToken} />
+            <Profile />
           </Route>
         </Switch>
         <Footer />
       </Container>
+    </UserContextProvider>
   );
 }
 

@@ -1,12 +1,14 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {useHistory} from "react-router-dom"
 import {Form, Row, Col, FormGroup, Label, Input, Button, Container} from "reactstrap";
+import UserContext from "../../context/UserContext";
 
-export default function Login({updateToken}) {
+export default function Login() {
+    const userContext = useContext(UserContext);
+    const history = useHistory();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const history = useHistory();
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -18,7 +20,7 @@ export default function Login({updateToken}) {
                 }),
                 headers: new Headers({"Content-Type":"application/json"})
             }).then(res => res.json()).then(data => {
-                updateToken(data.sessionToken);
+                userContext.setToken(data.sessionToken);
                 history.push("/profile");
             });
         } catch (err) {

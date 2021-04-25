@@ -26,6 +26,9 @@ but after, bootstrap styles will take affect.
 /*
     Recipe Card Styles
 */
+.recipe-card {
+    cursor: pointer;
+}
 .recipe-card-body {
     background-color: #444E66;
     color: white;

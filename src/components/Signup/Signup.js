@@ -48,7 +48,7 @@ export default function SignUp() {
                 })
             }).then(res => res.json());
             // redirect to profile
-            return history.push("/profile");
+            return history.push(`/profile/${createdUser.username}`);
         } catch (err) {
             console.log(err);
         }

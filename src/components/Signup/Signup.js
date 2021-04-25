@@ -35,7 +35,7 @@ export default function SignUp() {
             // updateToken
             userContext.setToken(createdUser.sessionToken);
             // if we do not have an image, redirect to user profile
-            if (!profileImage) return history.push(`/profile/${createdUser.username}`);
+            if (!profileImage) return history.push(`/profile/${username}`);
             // proccess image upload
             const formData = new FormData();
             formData.append("image", profileImage);
@@ -48,7 +48,7 @@ export default function SignUp() {
                 })
             }).then(res => res.json()).catch(console.log);
             // redirect to profile
-            return history.push(`/profile/${createdUser.username}`);
+            return history.push(`/profile/${username}`);
         } catch (err) {
             console.log(err);
         }

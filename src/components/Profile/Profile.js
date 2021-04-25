@@ -26,6 +26,14 @@ export default function Profile() {
         }
     }, [userContext.token, userContext.isAuth, userContext.user.username, username]);
 
+    const editProfileClicked = () => {
+        console.log("edit profile button clicked");
+    };
+
+    const addRecipeClicked = () => {
+        console.log("add recipe button clicked");
+    }
+
     return (
         <div>
             <Row>
@@ -36,8 +44,12 @@ export default function Profile() {
                             <CardTitle tag="h3">{publicUser ? publicUser.username : userContext.user.username}</CardTitle>
                             <CardText>{publicUser ? publicUser.aboutMe : userContext.user.aboutMe}</CardText>
                         </CardBody>
-                        {userContext.isAuth ? <Button className="mb-1" type="button" size="md" color="danager">Edit Profile</Button>: null}
-                        {userContext.isAuth ? <Button type="button" size="md" color="danager">Add Recipe</Button> : null}
+                        {/* button should only be seen when the user isAuth and username provided matches the signed in user */}
+                        {userContext.isAuth && username === userContext.user.username ?
+                            <Button className="mb-1" type="button" size="md" color="danager" onClick={editProfileClicked}>Edit Profile</Button>: null}
+                        {/* button should only be seen when the user isAuth and username provided matches the signed in user */}
+                        {userContext.isAuth && username === userContext.user.username ?
+                            <Button type="button" size="md" color="danager" onClick={addRecipeClicked}>Add Recipe</Button> : null}
                     </Card>
                 </Col>
                 <Col lg={9}>

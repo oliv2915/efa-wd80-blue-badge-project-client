@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import {useParams } from "react-router-dom";
 import {Row, Col, Card, CardBody, CardImg, CardTitle, CardText, Button} from "reactstrap";
+import genericProfileImg from "../../assets/generic_profile_img.svg";
 import UserContext from "../../context/UserContext";
 import RecipeCard from "../RecipeCard/RecipeCard";
 
@@ -23,20 +24,21 @@ export default function Profile() {
                 setRecipes(data.recipes);
             }).catch(console.log);
         }
-    }, [userContext.token, userContext.isAuth, userContext.user.username, username])
+    }, [userContext.token, userContext.isAuth, userContext.user.username, username]);
 
     return (
         <div>
             <Row>
                 <Col sm={12} lg={3}>
                     <Card color="secondary">
-                        <CardImg top src={publicUser ? publicUser.profileImageURL : userContext.user.profileImageURL} alt="profile image" />
+                        <CardImg top src={publicUser ? !publicUser.profileImageURL ? genericProfileImg : publicUser.profileImageURL : !userContext.user.profileImageURL ? genericProfileImg : userContext.user.profileImageURL} alt="profile image" />
                         <CardBody>
                             <CardTitle tag="h3">{publicUser ? publicUser.username : userContext.user.username}</CardTitle>
                             <CardText>{publicUser ? publicUser.aboutMe : userContext.user.aboutMe}</CardText>
                         </CardBody>
+                        {userContext.isAuth ? <Button className="mb-1" type="button" size="md" color="danager">Edit Profile</Button>: null}
+                        {userContext.isAuth ? <Button type="button" size="md" color="danager">Add Recipe</Button> : null}
                     </Card>
-                    <Button className="mt-2 mx-auto" type="button" size="lg" color="danager">Add Recipe</Button>
                 </Col>
                 <Col lg={9}>
                     <Row>

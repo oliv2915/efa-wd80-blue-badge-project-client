@@ -35,7 +35,7 @@ export default function SignUp() {
             // updateToken
             userContext.setToken(createdUser.sessionToken);
             // if we do not have an image, redirect to user profile
-            if (!profileImage) return history.push("/profile");
+            if (!profileImage) return history.push(`/profile/${createdUser.username}`);
             // proccess image upload
             const formData = new FormData();
             formData.append("image", profileImage);
@@ -46,7 +46,7 @@ export default function SignUp() {
                 headers: new Headers({
                     "Authorization": `Bearer ${createdUser.sessionToken}`
                 })
-            }).then(res => res.json());
+            }).then(res => res.json()).catch(console.log);
             // redirect to profile
             return history.push(`/profile/${createdUser.username}`);
         } catch (err) {

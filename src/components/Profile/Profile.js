@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import {useParams } from "react-router-dom";
-import {Row, Col, Card, CardBody, CardImg, CardTitle, CardText} from "reactstrap";
+import {Row, Col, Card, CardBody, CardImg, CardTitle, CardText, Button} from "reactstrap";
 import UserContext from "../../context/UserContext";
 import RecipeCard from "../RecipeCard/RecipeCard";
 
@@ -36,6 +36,7 @@ export default function Profile() {
                             <CardText>{publicUser ? publicUser.aboutMe : userContext.user.aboutMe}</CardText>
                         </CardBody>
                     </Card>
+                    <Button className="mt-2 mx-auto" type="button" size="lg" color="danager">Add Recipe</Button>
                 </Col>
                 <Col lg={9}>
                     <Row>

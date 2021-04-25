@@ -19,7 +19,7 @@ export default function Header() {
                     {
                         userContext.isAuth ? 
                                 <>
-                                    <NavItem className="nav-item"><LinkContainer to="/profile"><Button>Profile</Button></LinkContainer></NavItem>
+                                    <NavItem className="nav-item"><LinkContainer to={`/profile/${userContext.user.username}`}><Button>Profile</Button></LinkContainer></NavItem>
                                     <NavItem className="nav-item"><Button onClick={()=> userContext.setToken(null)}>Logout</Button></NavItem>
                                 </>
                             : 

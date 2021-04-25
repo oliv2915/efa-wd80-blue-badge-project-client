@@ -21,7 +21,7 @@ export default function Login() {
                 headers: new Headers({"Content-Type":"application/json"})
             }).then(res => res.json()).then(data => {
                 userContext.setToken(data.sessionToken);
-                history.push("/profile");
+                history.push(`/profile/${data.user.username}`);
             });
         } catch (err) {
             console.log(err);

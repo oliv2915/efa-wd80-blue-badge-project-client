@@ -1,12 +1,12 @@
 import React from "react";
-import RecipeList from "../RecipeList/RecipeList";;
+import {Row } from "reactstrap";
 
 export default function Splash() {
 
 
     return (
-        <>
-            <RecipeList />
-        </>
+        <Row>
+           
+        </Row>
     )
 }

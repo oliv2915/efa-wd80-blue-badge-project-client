@@ -5,7 +5,8 @@ const UserContext = createContext(null);
 export const UserContextProvider = ({children}) => {
     const [token, setToken] = useState(null);
     const [isAuth, setIsAuth] = useState(false);
-    const [user, setUser] = useState({})
+    const [user, setUser] = useState({});
+    const [loading, setLoading] = useState(false);
         
     useEffect(() => {
         setToken(localStorage.getItem("token"));
@@ -23,6 +24,7 @@ export const UserContextProvider = ({children}) => {
                 if (res.status !== 200) {
                     setToken(null);
                     setIsAuth(false);
+                    setLoading(true);
                     localStorage.removeItem("token");
                 }
                 return res.json();
@@ -30,19 +32,21 @@ export const UserContextProvider = ({children}) => {
                 if (data.id) {
                     setUser(data);
                     setIsAuth(true);
+                    setLoading(true);
                 }
-            });
+            }).catch(console.error);
         // if not token, access denied
         } else {
             setUser({});
             setIsAuth(false);
+            setLoading(true);
             localStorage.removeItem("token");
         }
     }, [token]);
 
 
     return (
-        <UserContext.Provider value={{token, setToken, isAuth, user}}>
+        <UserContext.Provider value={{token, setToken, isAuth, user, loading}}>
             {children}
         </UserContext.Provider>
     )

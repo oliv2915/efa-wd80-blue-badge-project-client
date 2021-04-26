@@ -44,5 +44,10 @@ but after, bootstrap styles will take affect.
     height: 400px
 }
 /* 
-    Profile Styles
+    Edit Profile Styles
 */
+.profile-cover {
+    object-fit: cover;
+    width: 100%;
+    height: 400px
+}

@@ -42,7 +42,7 @@ export default function Profile() {
                     <Card color="primary">
                         <CardImg top src={publicUser ? !publicUser.profileImageURL ? genericProfileImg : publicUser.profileImageURL : !userContext.user.profileImageURL ? genericProfileImg : userContext.user.profileImageURL} alt="profile image" />
                         <CardBody>
-                            <CardTitle tag="h3">{publicUser ? publicUser.username : userContext.user.username}</CardTitle>
+                            <CardTitle style={{color: "white"}} tag="h3"><b>{publicUser ? publicUser.username : userContext.user.username}</b></CardTitle>
                             <CardText>{publicUser ? publicUser.aboutMe : userContext.user.aboutMe}</CardText>
                         </CardBody>
                         {/* button should only be seen when the user isAuth and username provided matches the signed in user */}

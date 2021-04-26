@@ -115,7 +115,7 @@ export default function SignUp() {
 
     return (
         <Container>
-            {submitError ? <Alert color="danager">{alertMessage}</Alert> : null}
+            {submitError ? <Alert color="danger">{alertMessage}</Alert> : null}
             <Form onSubmit={handleSubmit}>
                 <h1 className="text-center">Sign Up</h1>
                 <p>Let's say you have an old recipe box. One that's handed down for years. The index cards are starting to fade. You need a place to store the recipe but want to easily get to it again. Maybe even have the aility to add a photo of that index card or of the meal.</p>

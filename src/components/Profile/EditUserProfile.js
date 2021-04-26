@@ -125,7 +125,7 @@ export default function EditUserProfile({isOpen, toggle}) {
                     <Input type="file" hidden ref={imageInput} onChange={handleImageFileSelected} />
                     <CardImg top src={profileImage} alt="profile image" height="400" className="mt-3" style={{cursor: "pointer"}} onClick={profileImageClicked}/>
                     <CardBody>
-                    {submitError ? <Alert color="danager">{alertMessage}</Alert> : null}
+                    {submitError ? <Alert color="danger">{alertMessage}</Alert> : null}
                         <Form onSubmit={handleSubmit}>
                             <h1 className="text-center">Edit Profile</h1>
                             <Row className="mt-3">

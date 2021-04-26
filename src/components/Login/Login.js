@@ -1,6 +1,6 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {useHistory} from "react-router-dom"
-import {Form, Row, Col, FormGroup, Label, Input, Button, Container} from "reactstrap";
+import {Form, Row, Col, FormGroup, Label, Input, Button, Container, Alert, FormFeedback} from "reactstrap";
 import UserContext from "../../context/UserContext";
 
 export default function Login() {
@@ -9,39 +9,86 @@ export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
+    const [validated, setValidated] = useState(false);
+    const [validationErrors, setValidationErrors] = useState([]);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        try {
-            fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/user/login`, {
-                method: "POST",
-                body: JSON.stringify({
-                    user:{username, password}
-                }),
-                headers: new Headers({"Content-Type":"application/json"})
-            }).then(res => res.json()).then(data => {
-                userContext.setToken(data.sessionToken);
-                history.push(`/profile/${data.user.username}`);
-            });
-        } catch (err) {
-            console.log(err);
+    const [submitError, setSubmitError] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
+    const [formSubmitted, setFormSubmitted] = useState(false);
+
+    const validateFields = () => {
+        const errors = []
+
+        if (username.length < 4 || !username.match(/(?=.{4,})(?=.*[0-9])|(?=.*[!@#$%&*()_+=|<>?{}~-])/g)) {
+            errors.push("username");
         }
+
+        if (password.length < 6 || password.length === 0) {
+            errors.push("password");
+        }
+
+        if (errors.length > 0) {
+            setValidated(false);
+            setValidationErrors(errors);
+        } else if(errors.length === 0) {
+            setValidated(true);
+            setValidationErrors(errors);
+        }
+            
+    }
+
+    useEffect(() => {
+        if (formSubmitted) {
+            validateFields()
+        }
+    }, [username, password])
+
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        validateFields();
+        setFormSubmitted(true);
+
+        if (validated) {
+            try {
+                const loginUser = await fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/user/login`, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        user:{username, password}
+                    }),
+                    headers: new Headers({"Content-Type":"application/json"})
+                }).then(res => res.json())
+
+                if ("sessionToken" in loginUser) {
+                    userContext.setToken(loginUser.sessionToken);
+                    return history.push(`/profile/${loginUser.user.username}`);
+                } else {
+                    setSubmitError(true);
+                    setAlertMessage("The username and password entered do not macth a registered user.")
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        } 
     }
     return (
         <Container>
             <Form onSubmit={handleSubmit}>
                 <h1 className="text-center">Login</h1>
+                {submitError ? <Alert color="danger">{alertMessage}</Alert> : null}
                 <Row className="mt-3">
                     <Col>
                         <FormGroup className="form-floating">
-                            <Input required type="text" name="signup-username" id="signup-username" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)}/>
-                            <Label htmlFor="signup-username">Username:</Label>
+                            <Input type="text" name="login-username" id="login-username" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)}/>
+                            <Label htmlFor="login-username">Username:</Label>
+                            {validationErrors.includes("username") && (<FormFeedback className="d-block">* Required</FormFeedback>)}
                         </FormGroup>
                     </Col>
                     <Col>
                         <FormGroup className="form-floating">
-                            <Input required type="password" name="signup-password" id="signup-password" value={password} placeholder="Password" onChange={e => setPassword(e.target.value)}/>
-                            <Label htmlFor="signup-password">Password:</Label>
+                            <Input type="password" name="login-password" id="login-password" value={password} placeholder="Password" onChange={e => setPassword(e.target.value)}/>
+                            <Label htmlFor="login-password">Password:</Label>
+                            {validationErrors.includes("password") && (<FormFeedback className="d-block">* Required</FormFeedback>)}
                         </FormGroup>
                     </Col>
                 </Row>

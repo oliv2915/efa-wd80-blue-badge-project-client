@@ -21,12 +21,12 @@ export default function Profile() {
     const toggleEditUserModal = () => setEditUserModalIsOpen(!editUserModalIsOpen);
 
     useEffect(() => {
-        if (userContext.user.username === username) {
+        if (userContext.user.username === username) { // authorized user
             fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/recipe/all`, {
                 method: "GET",
                 headers: new Headers({"Authorization": `Bearer ${userContext.token}`})
             }).then(res => res.json()).then(setRecipes).catch(console.log);
-        } else {
+        } else { // public visitor
             fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/user/profile/${username}`)
             .then(res => res.json()).then(data => {
                 setPublicUser(data.user);

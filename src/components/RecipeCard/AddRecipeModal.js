@@ -36,7 +36,7 @@ export default function RecipeModal({isOpen, toggle}) {
             <ModalBody>
                 <Card>
                     <input type="file" style={{display: "none"}} ref={inputFile} onChange={handleImageUpload} />
-                    <CardImg top src={recipeImg} alt="recipe image" height="400" className="mt-3" style={{cursor: "pointer"}} onClick={profileImageClicked}/>
+                    <CardImg top src={recipeImg} alt="recipe image" height="400" className="recipe-cover" style={{cursor: "pointer"}} onClick={profileImageClicked}/>
                     <CardBody>
                         <Form onSubmit={handleFormSubmit}>
                             <Row>

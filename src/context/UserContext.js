@@ -29,8 +29,8 @@ export const UserContextProvider = ({children}) => {
                 }
                 return res.json();
             }).then(data => {
-                if (data.id) {
-                    setUser(data);
+                if (data.user) {
+                    setUser(data.user);
                     setIsAuth(true);
                     setLoading(true);
                 }

@@ -30,17 +30,18 @@ export default function Login() {
     return (
         <Container>
             <Form onSubmit={handleSubmit}>
-                <Row>
+                <h1 className="text-center">Login</h1>
+                <Row className="mt-3">
                     <Col>
-                        <FormGroup>
+                        <FormGroup className="form-floating">
+                            <Input required type="text" name="signup-username" id="signup-username" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)}/>
                             <Label htmlFor="signup-username">Username:</Label>
-                            <Input required type="text" name="signup-username" id="signup-username" value={username} onChange={e => setUsername(e.target.value)}/>
                         </FormGroup>
                     </Col>
                     <Col>
-                        <FormGroup>
+                        <FormGroup className="form-floating">
+                            <Input required type="password" name="signup-password" id="signup-password" value={password} placeholder="Password" onChange={e => setPassword(e.target.value)}/>
                             <Label htmlFor="signup-password">Password:</Label>
-                            <Input required type="password" name="signup-password" id="signup-password" value={password} onChange={e => setPassword(e.target.value)}/>
                         </FormGroup>
                     </Col>
                 </Row>

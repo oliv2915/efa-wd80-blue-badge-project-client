@@ -4,7 +4,7 @@ export default function Footer() {
 
 
     return (
-        <footer>
+        <footer className="fixed-bottom text-center" variant="primary">
             <p>
                 &copy; {new Date().getFullYear()} - MealBox
             </p>

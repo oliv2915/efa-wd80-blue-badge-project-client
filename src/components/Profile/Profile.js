@@ -38,12 +38,12 @@ export default function Profile() {
     return (
         <div>
             <Row>
-                <Col sm={12} lg={3}>
+                <Col className="mb-3 col-md-6" sm={12} lg={3}>
                     <Card color="primary">
                         <CardImg top src={publicUser ? !publicUser.profileImageURL ? genericProfileImg : publicUser.profileImageURL : !userContext.user.profileImageURL ? genericProfileImg : userContext.user.profileImageURL} alt="profile image" />
                         <CardBody>
                             <CardTitle style={{color: "white"}} tag="h3"><b>{publicUser ? publicUser.username : userContext.user.username}</b></CardTitle>
-                            <CardText>{publicUser ? publicUser.aboutMe : userContext.user.aboutMe}</CardText>
+                            <CardText style={{color: "white"}}>{publicUser ? publicUser.aboutMe : userContext.user.aboutMe}</CardText>
                         </CardBody>
                         {/* button should only be seen when the user isAuth and username provided matches the signed in user */}
                         {userContext.isAuth && username === userContext.user.username ?

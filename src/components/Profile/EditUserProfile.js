@@ -111,7 +111,7 @@ export default function EditUserProfile({isOpen, toggle}) {
 
     const handleImageFileSelected = (event) => {
         setImgFile(event.target.files[0]);
-        setProfileImage(URL.createObjectURL(imgFile));
+        setProfileImage(URL.createObjectURL(event.target.files[0]));
     }
 
     const profileImageClicked = () => {
@@ -122,7 +122,7 @@ export default function EditUserProfile({isOpen, toggle}) {
         <Modal isOpen={isOpen} toggle={toggle} size="xl">
             <ModalBody>
                 <Card>
-                    <Input type="file" hidden ref={imageInput} onChange={handleImageFileSelected} />
+                    <input type="file" hidden ref={imageInput} onChange={handleImageFileSelected} />
                     <CardImg top className="profile-cover" src={profileImage} alt="profile image" height="400" style={{cursor: "pointer"}} onClick={profileImageClicked}/>
                     <CardBody>
                     {submitError ? <Alert color="danger">{alertMessage}</Alert> : null}

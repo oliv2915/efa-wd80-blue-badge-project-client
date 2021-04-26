@@ -115,7 +115,7 @@ export default function RecipeModal({isOpen, toggle, recipe}) {
                                 </Row>
                                 <Row className="mt-3">
                                     <Col md={6}>
-                                        <Button type="button" color="danager" onClick={deleteRecipeClicked}>Delete Recipe</Button>
+                                        <Button type="button" color="danger" onClick={deleteRecipeClicked}>Delete Recipe</Button>
                                     </Col>
                                     <Col md={6}>
                                         <Button type="submit" color="secondary">Update Recipe</Button>

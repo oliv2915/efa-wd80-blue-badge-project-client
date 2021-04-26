@@ -39,7 +39,7 @@ export default function Profile() {
         <div>
             <Row>
                 <Col sm={12} lg={3}>
-                    <Card color="secondary">
+                    <Card color="primary">
                         <CardImg top src={publicUser ? !publicUser.profileImageURL ? genericProfileImg : publicUser.profileImageURL : !userContext.user.profileImageURL ? genericProfileImg : userContext.user.profileImageURL} alt="profile image" />
                         <CardBody>
                             <CardTitle tag="h3">{publicUser ? publicUser.username : userContext.user.username}</CardTitle>
@@ -47,10 +47,10 @@ export default function Profile() {
                         </CardBody>
                         {/* button should only be seen when the user isAuth and username provided matches the signed in user */}
                         {userContext.isAuth && username === userContext.user.username ?
-                            <Button className="mb-1" type="button" size="md" color="danager" onClick={toggleEditUserModal}>Edit Profile</Button>: null}
+                            <Button className="mb-2 mx-2" type="button" size="md" color="danger" style={{color: "white"}} onClick={toggleEditUserModal}>Edit Profile</Button>: null}
                         {/* button should only be seen when the user isAuth and username provided matches the signed in user */}
                         {userContext.isAuth && username === userContext.user.username ?
-                            <Button type="button" size="md" color="danager" onClick={toggleRecipeModal}>Add Recipe</Button> : null}
+                            <Button className="mb-2 mx-2" type="button" size="md" color="success" style={{color: "white"}} onClick={toggleRecipeModal}>Add Recipe</Button> : null}
                     </Card>
                 </Col>
                 <Col lg={9}>

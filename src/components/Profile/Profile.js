@@ -4,12 +4,16 @@ import {Row, Col, Card, CardBody, CardImg, CardTitle, CardText, Button} from "re
 import genericProfileImg from "../../assets/generic_profile_img.svg";
 import UserContext from "../../context/UserContext";
 import RecipeCard from "../RecipeCard/RecipeCard";
+import AddRecipeModal from "../RecipeCard/AddRecipeModal";
 
 export default function Profile() {
     const {username} = useParams();
     const userContext = useContext(UserContext);
+
     const [recipes, setRecipes] = useState([]);
     const [publicUser, setPublicUser] = useState(false);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const toggle = () => setModalIsOpen(!modalIsOpen);
 
     useEffect(() => {
         if (userContext.user.username === username) {
@@ -30,9 +34,6 @@ export default function Profile() {
         console.log("edit profile button clicked");
     };
 
-    const addRecipeClicked = () => {
-        console.log("add recipe button clicked");
-    }
 
     return (
         <div>
@@ -49,7 +50,7 @@ export default function Profile() {
                             <Button className="mb-1" type="button" size="md" color="danager" onClick={editProfileClicked}>Edit Profile</Button>: null}
                         {/* button should only be seen when the user isAuth and username provided matches the signed in user */}
                         {userContext.isAuth && username === userContext.user.username ?
-                            <Button type="button" size="md" color="danager" onClick={addRecipeClicked}>Add Recipe</Button> : null}
+                            <Button type="button" size="md" color="danager" onClick={toggle}>Add Recipe</Button> : null}
                     </Card>
                 </Col>
                 <Col lg={9}>
@@ -59,6 +60,7 @@ export default function Profile() {
                         }) : null}
                     </Row>
                 </Col>
+                {modalIsOpen ? <AddRecipeModal isOpen={modalIsOpen} toggle={toggle} /> : null}
             </Row>
         </div>
     )

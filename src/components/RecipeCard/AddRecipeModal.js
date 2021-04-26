@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react"
+import React, {useRef, useState } from "react"
 import genericRecipeImage from "../../assets/generic_recipe_img.svg";
 import { Modal, ModalBody, Form, Row, Col, FormGroup, Input, Label, Card, CardImg, CardBody, Button } from "reactstrap"
 
 
-export default function RecipeModal({isOpen, toggle, recipe}) {
-    const [recipeId, setRecipeId] = useState(null);
-    const [recipeOwner, setRecipeOwner] = useState("");
-    const [recipeImg, setRecipeImg] = useState("")
+export default function RecipeModal({isOpen, toggle}) {
+    const [recipeImg, setRecipeImg] = useState(genericRecipeImage)
     const [recipeName, setRecipeName] = useState("");
     const [recipeType, setRecipeType] = useState("");
     const [servings, setServings] = useState("");
@@ -16,36 +14,28 @@ export default function RecipeModal({isOpen, toggle, recipe}) {
     const [cookingDirections, setCookingDirections] = useState("");
     const [ingredients, setIngredients] = useState([]);
 
-    useEffect(() => {
-        setRecipeId(recipe.id);
-        setRecipeOwner(recipe.user && recipe.user.username);
-        setRecipeImg(recipe.recipeImg ? recipe.recipeImg : genericRecipeImage);
-        setRecipeName(recipe.recipeName);
-        setRecipeType(recipe.recipeType);
-        setServings(recipe.servings);
-        setPrepTime(recipe.prepTime);
-        setDraft(recipe.draft);
-        setDescription(recipe.description);
-        setCookingDirections(recipe.cookingDirections);
-        setIngredients(recipe.ingredients);
-    }, [recipe.id, recipe.user, recipe.recipeImg, recipe.recipeName, recipe.recipeType, recipe.servings, recipe.prepTime, recipe.draft, recipe.description, recipe.cookingDirections, recipe.ingredients]);
+    const [imgFile, setImgFile] = useState(null);
+    const inputFile = useRef(null);
 
-    const profileImageClicked = (event) => {
-        console.log("profile image clicked");
+    const handleImageUpload = (event) => {
+        setImgFile(event.target.files[0]);
+        setRecipeImg(URL.createObjectURL(event.target.files[0]));
     }
 
-    const deleteRecipeClicked = (event) => {
-        console.log("delete recipe");
+    const profileImageClicked = () => {
+        inputFile.current.click();
     }
 
     const handleFormSubmit = (event) => {
         event.preventDefault();
+        console.log(imgFile)
     }
 
     return (
         <Modal isOpen={isOpen} toggle={toggle} size="xl">
                 <ModalBody>
                     <Card>
+                        <input type="file" style={{display: "none"}} ref={inputFile} onChange={handleImageUpload} />
                         <CardImg top src={recipeImg} alt="recipe image" height="400" className="mt-3" style={{cursor: "pointer"}} onClick={profileImageClicked}/>
                         <CardBody>
                             <Form onSubmit={handleFormSubmit}>
@@ -114,11 +104,8 @@ export default function RecipeModal({isOpen, toggle, recipe}) {
                                     </Col>
                                 </Row>
                                 <Row className="mt-3">
-                                    <Col md={6}>
-                                        <Button type="button" color="danager" onClick={deleteRecipeClicked}>Delete Recipe</Button>
-                                    </Col>
-                                    <Col md={6}>
-                                        <Button type="submit" color="secondary">Update Recipe</Button>
+                                    <Col md={12}>
+                                        <Button type="submit" color="secondary">Add Recipe</Button>
                                     </Col>
                                 </Row>
                             </Form>

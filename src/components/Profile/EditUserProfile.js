@@ -123,11 +123,11 @@ export default function EditUserProfile({isOpen, toggle}) {
             <ModalBody>
                 <Card>
                     <Input type="file" hidden ref={imageInput} onChange={handleImageFileSelected} />
-                    <CardImg top src={profileImage} alt="profile image" height="400" className="mt-3" style={{cursor: "pointer"}} onClick={profileImageClicked}/>
+                    <CardImg top className="profile-cover" src={profileImage} alt="profile image" height="400" style={{cursor: "pointer"}} onClick={profileImageClicked}/>
                     <CardBody>
                     {submitError ? <Alert color="danger">{alertMessage}</Alert> : null}
                         <Form onSubmit={handleSubmit}>
-                            <h1 className="text-center">Edit Profile</h1>
+                            <h2 className="text-center"><b>Edit Profile</b></h2>
                             <Row className="mt-3">
                                 <Col>
                                     <FormGroup className="form-floating">

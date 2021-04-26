@@ -26,6 +26,10 @@ export default function PublicRecipeModal({isOpen, toggle, recipe}) {
                                 <p>{recipe.cookingDirections}</p>
                             </Col>
                         </Row>
+                        <br/>
+                        <Row>
+                        <CardText style={{textAlign: "center"}}>Recipe submitted by: <b>{recipe.user.username}</b></CardText>
+                        </Row>
                     </CardBody>
                 </Card>
             </ModalBody>

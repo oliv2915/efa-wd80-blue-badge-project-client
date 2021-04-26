@@ -46,7 +46,7 @@ export default function RecipeModal({isOpen, toggle, recipe}) {
         <Modal isOpen={isOpen} toggle={toggle} size="xl">
                 <ModalBody>
                     <Card>
-                        <CardImg top src={recipeImg} alt="recipe image" height="400" className="mt-3" style={{cursor: "pointer"}} onClick={profileImageClicked}/>
+                        <CardImg top src={recipeImg} alt="recipe image" height="400" className="recipe-cover" style={{cursor: "pointer"}} onClick={profileImageClicked}/>
                         <CardBody>
                             <Form onSubmit={handleFormSubmit}>
                                 <Row>

@@ -14,7 +14,7 @@ export default function Recipe({recipe}) {
 
     return (
         <Col sm={12} md={6} lg={4} xl={3}>            
-            <Card className="recipe-card mb-3" onClick={toggle}>
+            <Card className="recipe-card mb-3" onClick={toggle} style={{cursor: "pointer"}}>
                 <CardImg className="recipe.card-image" src={!recipe.recipeImageURL ? genericRecipeImage : recipe.recipeImageURL} alt="recipe image" />
                 <CardBody className="recipe-card-body">
                     <CardTitle tag="h5">{recipe.recipeName}</CardTitle>

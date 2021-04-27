@@ -57,7 +57,7 @@ export default function Profile() {
                 <Col lg={9}>
                     <Row>
                         {recipes && recipes.length > 0 ? recipes.map((recipe, idx) => {
-                            return <RecipeCard key={idx} recipe={recipe} />
+                            return <RecipeCard key={idx} recipe={recipe} onExit={reloadWindow} />
                         }) : null}
                     </Row>
                 </Col>

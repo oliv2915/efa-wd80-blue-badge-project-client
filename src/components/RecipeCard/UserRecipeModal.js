@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useContext, useRef } from "react"
 import genericRecipeImage from "../../assets/generic_recipe_img.svg";
-import { Modal, ModalBody, Form, Row, Col, FormGroup, Input, Label, Card, CardImg, CardBody, Button } from "reactstrap"
+import { Modal, ModalBody, Form, Row, Col, FormGroup, Input, Label, Card, CardImg, CardBody, Button, Alert, FormFeedback } from "reactstrap"
 import UserContext from "../../context/UserContext"
 
 
-export default function RecipeModal({isOpen, toggle, recipe}) {
+export default function RecipeModal({isOpen, toggle, recipe, onExit}) {
     const userContext = useContext(UserContext);
     const [recipeId, setRecipeId] = useState(null);
     const [recipeOwner, setRecipeOwner] = useState("");
@@ -13,7 +13,7 @@ export default function RecipeModal({isOpen, toggle, recipe}) {
     const [recipeType, setRecipeType] = useState("");
     const [servings, setServings] = useState("");
     const [prepTime, setPrepTime] = useState("");
-    const [draft, setDraft] = useState("");
+    const [draft, setDraft] = useState(true);
     const [description, setDescription] = useState("");
     const [cookingDirections, setCookingDirections] = useState("");
     const [ingredients, setIngredients] = useState([]);
@@ -60,27 +60,32 @@ export default function RecipeModal({isOpen, toggle, recipe}) {
         }
     }
 
+    useEffect(() => {
+        validateFields();
+    }, [recipeName, recipeType, servings, prepTime, draft, description, cookingDirections, ingredients])
+
 
     useEffect(() => {
         setRecipeId(recipe.id);
-        setRecipeOwner(recipe.user && recipe.user.username);
         setRecipeImg(recipe.recipeImg ? recipe.recipeImg : genericRecipeImage);
         setRecipeName(recipe.recipeName);
         setRecipeType(recipe.recipeType);
         setServings(recipe.servings);
         setPrepTime(recipe.prepTime);
+        console.log(recipe)
         setDraft(recipe.draft);
         setDescription(recipe.description);
         setCookingDirections(recipe.cookingDirections);
-        setIngredients(recipe.ingredients);
-    }, [recipe.id, recipe.user, recipe.recipeImg, recipe.recipeName, recipe.recipeType, recipe.servings, recipe.prepTime, recipe.draft, recipe.description, recipe.cookingDirections, recipe.ingredients]);
+        setIngredients(recipe.ingredients.toString());
+    }, [recipe.id, recipe.recipeImg, recipe.recipeName, recipe.recipeType, recipe.servings, recipe.prepTime, recipe.draft, recipe.description, recipe.cookingDirections, recipe.ingredients]);
 
-    const recipeImageClicked = (event) => {
-        inputFile.current.click();
-    }
 
     const deleteRecipeClicked = (event) => {
         console.log("delete recipe");
+    }
+
+    const recipeImageClicked = () => {
+        inputFile.current.click();
     }
 
     const handleImageUpload = (event) => {
@@ -92,9 +97,22 @@ export default function RecipeModal({isOpen, toggle, recipe}) {
         event.preventDefault();
         validateFields();
 
+        // console.log(JSON.stringify({
+        //     recipe: {
+        //         recipeName: recipeName,
+        //         recipeType: recipeType,
+        //         servings: servings,
+        //         prepTime: prepTime,
+        //         description: description,
+        //         draft: draft,
+        //         cookingDirections: cookingDirections,
+        //         ingredients: ingredients.split(",")
+        //     }
+        // }))
+
         if (validated) {
             try {
-                const updateRecipe = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/recipe/update/${recipeId}`, {
+                const updateRecipe = await fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/recipe/update/${recipeId}`, {
                     method: "PUT",                    
                     body: JSON.stringify({
                         recipe: {
@@ -148,24 +166,27 @@ export default function RecipeModal({isOpen, toggle, recipe}) {
     }
 
     return (
-        <Modal isOpen={isOpen} toggle={toggle} size="xl">
+        <Modal isOpen={isOpen} toggle={toggle} onExit={onExit} size="xl">
                 <ModalBody>
                     <Card>
                     <input type="file" style={{display: "none"}} ref={inputFile} onChange={handleImageUpload}/>
                         <CardImg top src={recipeImg} alt="recipe image" height="400" className="recipe-cover mt-3" style={{cursor: "pointer"}} onClick={recipeImageClicked}/>
                         <CardBody>
+                            {submitError ? <Alert color="danger">{alertMessage}</Alert> : null}
                             <Form onSubmit={handleFormSubmit}>
                                 <Row>
                                     <Col md={6}>
                                         <FormGroup className="form-floating">
                                             <Input type="text" id="recipe-name" placeholder={recipeName} value={recipeName} onChange={e => setRecipeName(e.target.value)}/>
                                             <Label htmlFor="recipe-name">Recipe Name</Label>
+                                            {validationErrors.includes("recipeName") && (<FormFeedback className="d-block">* Required</FormFeedback>)}
                                         </FormGroup>
                                     </Col>
                                     <Col md={6}>
                                         <FormGroup className="form-floating">
                                             <Input type="text" id="recipe-type" placeholder={recipeType} value={recipeType} onChange={e => setRecipeType(e.target.value)}/>
                                             <Label htmlFor="recipe-type">Recipe Type</Label>
+                                            {validationErrors.includes("recipeType") && (<FormFeedback className="d-block">* Required</FormFeedback>)}
                                         </FormGroup>
                                     </Col>
                                 </Row>
@@ -175,20 +196,22 @@ export default function RecipeModal({isOpen, toggle, recipe}) {
                                         <FormGroup className="form-floating">
                                             <Input type="text" id="recipe-servings" placeholder={servings} value={servings} onChange={e => setServings(e.target.value)}/>
                                             <Label htmlFor="recipe-servings">Servings</Label>
+                                            {validationErrors.includes("servings") && (<FormFeedback className="d-block">* Required and must be a number</FormFeedback>)}
                                         </FormGroup>
                                     </Col>
                                     <Col md={4}>
                                         <FormGroup className="form-floating">
                                             <Input type="text" id="recipe-prep-time" placeholder={prepTime} value={prepTime} onChange={e => setPrepTime(e.target.value)}/>
                                             <Label htmlFor="recipe-prep-time">Prep Time</Label>
+                                            {validationErrors.includes("prepTime") && (<FormFeedback className="d-block">* Required</FormFeedback>)}
                                         </FormGroup>
                                     </Col>
                                     <Col md={4}>
                                         <FormGroup className="form-floating">
-                                            <select className="form-select" id="recipe-status" onChange={e => setDraft(e.target.value)} value={draft}>
+                                            <Input type="select" id="recipe-status" onChange={e => setDraft(e.target.value)} value={draft}>
                                                 <option value={true}>Draft</option>
                                                 <option value={false}>Public</option>
-                                            </select>
+                                            </Input>
                                             <Label htmlFor="recipe-status">Recipe Status</Label>
                                         </FormGroup>
                                     </Col>
@@ -199,6 +222,7 @@ export default function RecipeModal({isOpen, toggle, recipe}) {
                                         <FormGroup className="form-floating">
                                             <textarea className="form-control" value={description} id="recipe-description" placeholder={description} onChange={e => setDescription(e.target.value)}></textarea>
                                             <Label htmlFor="recipe-description">Description</Label>
+                                            {validationErrors.includes("description") && (<FormFeedback className="d-block">* Required</FormFeedback>)}
                                         </FormGroup>
                                     </Col>
                                 </Row>
@@ -208,6 +232,7 @@ export default function RecipeModal({isOpen, toggle, recipe}) {
                                         <FormGroup className="form-floating">
                                             <textarea className="form-control" value={cookingDirections} id="recipe-cooking-directions" placeholder={cookingDirections} onChange={e => setCookingDirections(e.target.value)}></textarea>
                                             <Label htmlFor="recipe-cooking-directions">Cooking Directions</Label>
+                                            {validationErrors.includes("cookingDirections") && (<FormFeedback className="d-block">* Required</FormFeedback>)}
                                         </FormGroup>
                                     </Col>
                                 </Row>
@@ -216,6 +241,7 @@ export default function RecipeModal({isOpen, toggle, recipe}) {
                                         <FormGroup className="form-floating">
                                             <Input type="text" id="recipe-ingredients" placeholder={ingredients} value={ingredients} onChange={e => setIngredients(e.target.value)}/>
                                             <Label htmlFor="recipe-ingredients">Ingredients</Label>
+                                            {validationErrors.includes("ingredients") && (<FormFeedback className="d-block">* Required and must be comman seprated, no spaces</FormFeedback>)}
                                         </FormGroup>
                                     </Col>
                                 </Row>

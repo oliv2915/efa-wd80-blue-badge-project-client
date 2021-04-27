@@ -53,10 +53,10 @@ export default function SignUp() {
     }
 
     useEffect(() => {
-        if (formSubmitted) {
+        // if (formSubmitted) {
             validateFields();
-        }
-    }, [firstName, lastName, username, email, password, confirmPassword])
+        // }
+    }, [firstName, lastName, username, email, password, confirmPassword, formSubmitted])
 
       
     const handleSubmit = async (event) => {

@@ -2,20 +2,18 @@ import React, {useRef, useState, useContext, useEffect} from "react"
 import genericRecipeImage from "../../assets/generic_recipe_img.svg";
 import { Modal, ModalBody, Form, Row, Col, FormGroup, Input, Label, Card, CardImg, CardBody, Button, FormFeedback, Alert } from "reactstrap";
 import UserContext from "../../context/UserContext";
-import { useHistory } from "react-router";
 
 
 
 
 export default function RecipeModal({isOpen, toggle, onExit}) {
-    const history = useHistory();
     const userContext = useContext(UserContext)
     const [recipeImg, setRecipeImg] = useState(genericRecipeImage)
     const [recipeName, setRecipeName] = useState("");
     const [recipeType, setRecipeType] = useState("");
     const [servings, setServings] = useState("");
     const [prepTime, setPrepTime] = useState("");
-    const [draft, setDraft] = useState("");
+    const [draft, setDraft] = useState(true);
     const [description, setDescription] = useState("");
     const [cookingDirections, setCookingDirections] = useState("");
     const [ingredients, setIngredients] = useState([]);
@@ -64,10 +62,10 @@ export default function RecipeModal({isOpen, toggle, onExit}) {
     }
 
     useEffect(() => {
-        if (formSubmitted) {
+        // if (formSubmitted) {
             validateFields();
-        }
-    }, [recipeType, recipeName, servings, description, cookingDirections, ingredients, prepTime])
+        // }
+    }, [recipeType, recipeName, servings, description, cookingDirections, ingredients, prepTime, draft, formSubmitted])
 
     const handleImageUpload = (event) => {
         setImgFile(event.target.files[0]);
@@ -82,7 +80,8 @@ export default function RecipeModal({isOpen, toggle, onExit}) {
         event.preventDefault();
         validateFields();
         setFormSubmitted(true);
-        
+
+
         if (validated) {
             try {
                 const newRecipe = await fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/recipe/add`, {
@@ -182,10 +181,12 @@ export default function RecipeModal({isOpen, toggle, onExit}) {
                                 </Col>
                                 <Col md={4}>
                                     <FormGroup className="form-floating">
-                                        <select className="form-select" id="recipe-status" onChange={e => setDraft(e.target.value)} value={draft}>
-                                            <option value={true}>Draft</option>
-                                            <option value={false}>Public</option>
-                                        </select>
+                                        <Input type="select" id="recipe-status" onChange={e => setDraft(e.target.value)} value={draft}>
+                                            <option value="true">Draft</option>
+                                            <option value="false">Public</option>
+                                        </Input>
+                                        {/* <select className="form-select" id="recipe-status" onChange={e => setDraft(e.target.value)} value={draft}>
+                                        </select> */}
                                         <Label htmlFor="recipe-status">Recipe Status</Label>
                                     </FormGroup>
                                 </Col>

@@ -14,7 +14,6 @@ export default function Login() {
 
     const [submitError, setSubmitError] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
-    const [formSubmitted, setFormSubmitted] = useState(false);
 
     const validateFields = () => {
         const errors = []
@@ -36,18 +35,16 @@ export default function Login() {
         }
             
     }
-
+    
     useEffect(() => {
-        if (formSubmitted) {
             validateFields()
-        }
     }, [username, password])
+
 
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         validateFields();
-        setFormSubmitted(true);
 
         if (validated) {
             try {

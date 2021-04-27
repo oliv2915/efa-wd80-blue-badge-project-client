@@ -113,7 +113,7 @@ export default function RecipeModal({isOpen, toggle, recipe, onExit}) {
 
         if (validated) {
             try {
-                const updateRecipe = await fetch(`${API_URL}recipe/update/${recipeId}`, {
+                const updateRecipe = await fetch(`${API_URL}/recipe/update/${recipeId}`, {
                     method: "PUT",                    
                     body: JSON.stringify({
                         recipe: {
@@ -138,7 +138,7 @@ export default function RecipeModal({isOpen, toggle, recipe, onExit}) {
                         const formData = new FormData();
                         formData.append('image', imgFile);
 
-                        await fetch(`${API_URL}upload?type=recipe&recipe=${updateRecipe.recipe.id}`, {
+                        await fetch(`${API_URL}/upload?type=recipe&recipe=${updateRecipe.recipe.id}`, {
                             method: "POST",
                             body: formData,
                             headers: new Headers({

@@ -1,0 +1,70 @@
+$theme-colors: (
+    "primary": #E66D54,
+    "secondary": #CFCD37,
+    "danger": #993C29,
+    "warning": #E6AD3A,
+    "light": #F2B6A9,
+    "success": #999829
+);
+$body-color: #444E66;
+$font-family-sans-serif: "Montserrat", sans-serif;
+/*
+All boostrap style overrides must be placed
+before this import statement. If not placed before
+but after, bootstrap styles will take affect.
+*/
+@import "~bootstrap/scss/bootstrap.scss";
+
+/*
+    Navbar Styles
+*/
+.navbar {
+    height: 80px;
+}
+footer {
+    background-color: white;
+    margin-top: 5px;
+}
+
+.nav-item {
+    margin-right: 5px;
+}
+/*
+    Recipe Card Styles
+*/
+.recipe-card-image {
+    object-fit: cover;
+    height: 250px;
+    width: 100%;
+}
+
+.recipe-card-body {
+    background-color: #444E66;
+    color: white;
+    height: 6rem;
+}
+/*
+    Public Recipe Card Styles
+*/
+.recipe-name {
+    text-align: center;
+    font-weight: bold;
+}
+.recipe-cover {
+    object-fit: cover;
+    width: 100%;
+    height: 400px;
+}
+/* 
+    Edit Profile Styles
+*/
+.profile-cover {
+    object-fit: cover;
+    width: 100%;
+    height: 400px;
+}
+
+.public-recipe-card-body {
+    background-color: #444E66;
+    color: white;
+}

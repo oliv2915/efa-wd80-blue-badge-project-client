@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useContext, useRef } from "react"
 import genericRecipeImage from "../../assets/generic_recipe_img.svg";
 import { Modal, ModalBody, Form, Row, Col, FormGroup, Input, Label, Card, CardImg, CardBody, Button } from "reactstrap"
+import UserContext from "../../context/UserContext"
 
 
 export default function RecipeModal({isOpen, toggle, recipe}) {
+    const userContext = useContext(UserContext);
     const [recipeId, setRecipeId] = useState(null);
     const [recipeOwner, setRecipeOwner] = useState("");
     const [recipeImg, setRecipeImg] = useState("")
@@ -15,6 +17,49 @@ export default function RecipeModal({isOpen, toggle, recipe}) {
     const [description, setDescription] = useState("");
     const [cookingDirections, setCookingDirections] = useState("");
     const [ingredients, setIngredients] = useState([]);
+
+    const [imgFile, setImgFile] = useState(null);
+    const inputFile = useRef(null);
+
+    const [validated, setValidated] = useState(false);
+    const [validationErrors, setValidationErrors] = useState([]);
+    const [submitError, setSubmitError] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
+
+    const validateFields = () => {
+        const errors = [];
+
+        if (recipeName.length < 1) {
+            errors.push("recipeName");
+        }
+        if (recipeType.length < 1) {
+            errors.push("recipeType");
+        }
+        if (prepTime.length < 0) {
+            errors.push("prepTime");
+        }
+        if (isNaN(servings) || servings.length < 1) {
+            errors.push("servings");
+        }
+        if (description.length < 1) {
+            errors.push("description");
+        }
+        if (cookingDirections.length < 1) {
+            errors.push("cookingDirections");
+        }
+        if (ingredients.length < 0) {
+            errors.push("ingredients");
+        }
+
+        if (errors.length > 0) {
+            setValidated(false);
+            setValidationErrors(errors);
+        } else {
+            setValidated(true);
+            setValidationErrors(errors)
+        }
+    }
+
 
     useEffect(() => {
         setRecipeId(recipe.id);
@@ -30,23 +75,84 @@ export default function RecipeModal({isOpen, toggle, recipe}) {
         setIngredients(recipe.ingredients);
     }, [recipe.id, recipe.user, recipe.recipeImg, recipe.recipeName, recipe.recipeType, recipe.servings, recipe.prepTime, recipe.draft, recipe.description, recipe.cookingDirections, recipe.ingredients]);
 
-    const profileImageClicked = (event) => {
-        console.log("profile image clicked");
+    const recipeImageClicked = (event) => {
+        inputFile.current.click();
     }
 
     const deleteRecipeClicked = (event) => {
         console.log("delete recipe");
     }
 
-    const handleFormSubmit = (event) => {
+    const handleImageUpload = (event) => {
+        setImgFile(event.target.files[0])
+        setRecipeImg(URL.createObjectURL(event.target.files[0]))
+    }
+
+    const handleFormSubmit = async (event) => {
         event.preventDefault();
+        validateFields();
+
+        if (validated) {
+            try {
+                const updateRecipe = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/recipe/update/${recipeId}`, {
+                    method: "PUT",                    
+                    body: JSON.stringify({
+                        recipe: {
+                            recipeName: recipeName,
+                            recipeType: recipeType,
+                            servings: servings,
+                            prepTime: prepTime,
+                            description: description,
+                            draft: draft,
+                            cookingDirections: cookingDirections,
+                            ingredients: ingredients.split(",")
+                        }
+                    }),
+                    headers: new Headers({
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${userContext.token}`
+                    })
+                }).then(res => res.json());
+
+                if ('recipe' in updateRecipe) {
+                    if (imgFile) {
+                        const formData = new FormData();
+                        formData.append('image', imgFile);
+
+                        await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/upload?type=recipe&recipe=${updateRecipe.recipe.id}`, {
+                            method: "POST",
+                            body: formData,
+                            headers: new Headers({
+                                "Authorization": `Bearer ${userContext.token}`
+                            })
+                        }).then(res => {
+                            if (res.status !== 200) {
+                                setSubmitError(true);
+                                setAlertMessage("There was an issue uploading your photo.");
+                            } else {
+                                toggle();
+                            }
+                        })
+                    } else {
+                        toggle();
+                    }
+                } else {
+                    setSubmitError(true);
+                    setAlertMessage("There was a problem with updating your recipe. Please check your entries and try again.")
+                }
+
+            } catch (err) {
+                console.log(err)
+            }
+        }
     }
 
     return (
         <Modal isOpen={isOpen} toggle={toggle} size="xl">
                 <ModalBody>
                     <Card>
-                        <CardImg top src={recipeImg} alt="recipe image" height="400" className="recipe-cover" style={{cursor: "pointer"}} onClick={profileImageClicked}/>
+                    <input type="file" style={{display: "none"}} ref={inputFile} onChange={handleImageUpload}/>
+                        <CardImg top src={recipeImg} alt="recipe image" height="400" className="recipe-cover mt-3" style={{cursor: "pointer"}} onClick={recipeImageClicked}/>
                         <CardBody>
                             <Form onSubmit={handleFormSubmit}>
                                 <Row>

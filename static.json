@@ -6,7 +6,7 @@
     },
     "proxies": {
         "/api/": {
-            "origin": "https://wd80-blue-badge-project-server.herokuapp.com"
+            "origin": "https://wd80-blue-badge-project-server.herokuapp.com/api"
         }
     }
 }

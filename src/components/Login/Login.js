@@ -49,7 +49,7 @@ export default function Login() {
 
         if (validated) {
             try {
-                const loginUser = await fetch(`${API_URL}/user/login`, {
+                const loginUser = await fetch(`${API_URL}user/login`, {
                     method: "POST",
                     body: JSON.stringify({
                         user:{username, password}

@@ -7,7 +7,7 @@ export default function Splash() {
     const [recipes, setRecipes] = useState();
 
     useEffect(() => {
-        fetch(`${API_URL}/recipe/published`)
+        fetch(`${API_URL}recipe/published`)
             .then(res => res.json())
             .then(setRecipes)
             .catch(console.log)

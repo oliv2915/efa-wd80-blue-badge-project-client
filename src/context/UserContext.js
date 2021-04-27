@@ -1,4 +1,5 @@
 import {createContext, useEffect, useState} from "react"
+import API_URL from "../helpers/environment";
 
 const UserContext = createContext(null);
 
@@ -16,7 +17,7 @@ export const UserContextProvider = ({children}) => {
         if (token) {
             localStorage.setItem("token", token);
 
-            fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/user/profile`, {
+            fetch(`${API_URL}/user/profile`, {
                 method: "GET",
                 headers: new Headers({"Authorization": `Bearer ${token}`})
             }).then(res => {

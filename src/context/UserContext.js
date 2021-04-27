@@ -17,7 +17,7 @@ export const UserContextProvider = ({children}) => {
         if (token) {
             localStorage.setItem("token", token);
 
-            fetch(`${API_URL}user/profile`, {
+            fetch(`${API_URL}/user/profile`, {
                 method: "GET",
                 headers: new Headers({"Authorization": `Bearer ${token}`})
             }).then(res => {

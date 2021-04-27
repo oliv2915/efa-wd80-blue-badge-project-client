@@ -24,12 +24,12 @@ export default function Profile() {
 
     useEffect(() => {
         if (userContext.user.username === username) { // authorized user
-            fetch(`${API_URL}recipe/all`, {
+            fetch(`${API_URL}/recipe/all`, {
                 method: "GET",
                 headers: new Headers({"Authorization": `Bearer ${userContext.token}`})
             }).then(res => res.json()).then(setRecipes).catch(console.log);
         } else { // public visitor
-            fetch(`${API_URL}user/profile/${username}`)
+            fetch(`${API_URL}/user/profile/${username}`)
             .then(res => res.json()).then(data => {
                 setPublicUser(data.user);
                 setRecipes(data.recipes);

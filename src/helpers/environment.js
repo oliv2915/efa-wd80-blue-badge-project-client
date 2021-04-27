@@ -9,8 +9,9 @@ switch (window.location.hostname) {
         // this is the deployed react application
     case "wd80-blue-badge-project-server.herokuapp.com":
         // this is the full url of your deployed API
-        API_URL = "https://wd80-blue-badge-project-server.herokuapp.com/"
+        API_URL = "https://wd80-blue-badge-project-server.herokuapp.com"
 
 }
+
 
 export default API_URL;

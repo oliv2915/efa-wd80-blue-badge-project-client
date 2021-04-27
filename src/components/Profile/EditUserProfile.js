@@ -70,7 +70,7 @@ export default function EditUserProfile({isOpen, toggle, onExit}) {
         if (validated) { // fields have passed all requirmenets (true), submit data
             try {
                 // submit user data to server
-                const updatedUser = await fetch(`${API_URL}user/update`, {
+                const updatedUser = await fetch(`${API_URL}/user/update`, {
                     method: "PUT",
                     body: JSON.stringify({
                         user:{firstName, lastName, username, email, password, aboutMe}
@@ -89,7 +89,7 @@ export default function EditUserProfile({isOpen, toggle, onExit}) {
                         const formData = new FormData();
                         formData.append("image", imgFile);
                         // submit fetch
-                        await fetch(`${API_URL}upload?type=user`, {
+                        await fetch(`${API_URL}/upload?type=user`, {
                             method: "POST",
                             body: formData,
                             headers: new Headers({

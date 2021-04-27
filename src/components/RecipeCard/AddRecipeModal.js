@@ -1,9 +1,13 @@
-import React, {useRef, useState } from "react"
+import React, {useRef, useState, useContext} from "react"
 import genericRecipeImage from "../../assets/generic_recipe_img.svg";
-import { Modal, ModalBody, Form, Row, Col, FormGroup, Input, Label, Card, CardImg, CardBody, Button } from "reactstrap"
+import { Modal, ModalBody, Form, Row, Col, FormGroup, Input, Label, Card, CardImg, CardBody, Button } from "reactstrap";
+import UserContext from "../../context/UserContext";
+
+
 
 
 export default function RecipeModal({isOpen, toggle}) {
+    const userContext = useContext(UserContext)
     const [recipeImg, setRecipeImg] = useState(genericRecipeImage)
     const [recipeName, setRecipeName] = useState("");
     const [recipeType, setRecipeType] = useState("");
@@ -26,10 +30,44 @@ export default function RecipeModal({isOpen, toggle}) {
         inputFile.current.click();
     }
 
-    const handleFormSubmit = (event) => {
+    const handleFormSubmit = async (event) => {
         event.preventDefault();
-        console.log(imgFile)
+        // const fetchResponse = await fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/recipe/add`, {
+        //     method: 'POST',
+        //     body: JSON.stringify({recipe: 
+        //         {
+        //         recipeName: recipeName, 
+        //         recipeType: recipeType,
+        //         servings: servings, 
+        //         prepTime: prepTime, 
+        //         draft: draft, 
+        //         description: description, 
+        //         cookingDirections: cookingDirections, 
+        //         ingredients: ingredients}  
+        //     }),
+        //     headers: new Headers({
+        //         'Content-Type': 'application/json',
+        //         'Authorization': `Bearer ${userContext.token}`
+        //     })
+        // }) 
+        // console.log(await fetchResponse.json());
+        // .then((res) => res.json())
+        // .then((recipeData) => {
+        //     console.log(recipeData);
+        //     setRecipeType(recipeData.recipeType)
+        //     setServings(recipeData.setServings)
+        //     setPrepTime(recipeData.setPrepTime)
+        //     setDraft(recipeData.setDraft)
+        //     setDescription(recipeData.setDescription)
+        //     setCookingDirections(recipeData.setCookingDirections)
+        //     setIngredients(recipeData.setIngredients)
+            
+        // }) 
     }
+
+
+       
+    
 
     return (
         <Modal isOpen={isOpen} toggle={toggle} size="xl">

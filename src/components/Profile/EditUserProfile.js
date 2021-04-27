@@ -1,16 +1,18 @@
 import React, { useRef, useState, useContext, useEffect } from "react";
+import genericeProfileImg from "../../assets/generic_profile_img.svg"
 import { Input, Modal, ModalBody, Card, CardImg, CardBody, Form, Row, Col, FormGroup, Button, Alert, Label, FormFeedback } from "reactstrap";
 import UserContext from "../../context/UserContext";
 
-export default function EditUserProfile({isOpen, toggle}) {
+export default function EditUserProfile({isOpen, toggle, onExit}) {
     const userContext = useContext(UserContext);
     const [firstName, setFirstName] = useState(userContext.user.firstName);
     const [lastName, setLastName] = useState(userContext.user.lastName);
     const [username, setUsername] = useState(userContext.user.username);
     const [email, setEmail] = useState(userContext.user.email);
+    const [aboutMe, setAboutMe] = useState(userContext.user.aboutMe);
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [profileImage, setProfileImage] = useState(userContext.user.profileImageURL);
+    const [profileImage, setProfileImage] = useState(userContext.user.profileImageURL ? userContext.user.profileImageURL : genericeProfileImg);
     
     const [imgFile, setImgFile] = useState(null);
     const imageInput = useRef(null);
@@ -53,60 +55,58 @@ export default function EditUserProfile({isOpen, toggle}) {
     }
 
     useEffect(() => {
-        if (formSubmitted) {
+        // if (formSubmitted) {
             validateFields();
-        }
-    }, [firstName, lastName, username, email, password, confirmPassword])
+        // }
+    }, [firstName, lastName, username, email, password, confirmPassword, formSubmitted])
 
       
     const handleSubmit = async (event) => {
         event.preventDefault();
         validateFields();
         setFormSubmitted(true);
-        /*
-        This will handle two things. End result, we have newly created user
-        with a profileImage attached to there profile.
-        1 - create the user in the database
-        2 - upload image file
-        */
-        // if (validated) { // fields have passed all requirmenets (true), submit data
-        //     try {
-        //         // submit user data to server
-        //         const newUser = await fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/user/signup`, {
-        //             method: "POST",
-        //             body: JSON.stringify({
-        //                 user:{firstName, lastName, username, email, password}
-        //             }),
-        //             headers: new Headers({"Content-Type":"application/json"})
-        //         }).then(res => res.json())
-        //         // check to see if we have a returned user obj
-        //         if ("sessionToken" in newUser) {
-        //             // set the userContext token
-        //             userContext.setToken(newUser.sessionToken);
-
-        //             // check to see if we have an image
-        //             if (profileImage) { 
-        //                 // create a new formdata obj for our image
-        //                 const formData = new FormData();
-        //                 formData.append("image", profileImage);
-        //                 // submit fetch
-        //                 await fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/upload?type=user`, {
-        //                     method: "POST",
-        //                     body: formData,
-        //                     headers: new Headers({
-        //                         "Authorization": `Bearer ${newUser.sessionToken}`
-        //                     })
-        //                 })
-        //             }
-        //             return history.push(`/profile/${newUser.user.username}`)
-        //         } else {
-        //             setSubmitError(true);
-        //             setAlertMessage("The supplied username and/or email address is in use");
-        //         }               
-        //     } catch (err) {
-        //         console.log(err)
-        //     }
-        // }
+        
+        if (validated) { // fields have passed all requirmenets (true), submit data
+            try {
+                // submit user data to server
+                const updatedUser = await fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/user/update`, {
+                    method: "PUT",
+                    body: JSON.stringify({
+                        user:{firstName, lastName, username, email, password, aboutMe}
+                    }),
+                    headers: new Headers({
+                        "Content-Type":  "application/json",
+                        "Authorization": `Bearer ${userContext.token}`
+                    })
+                }).then(res => res.json())
+                // check to see if we have a returned user obj
+                
+                if (updatedUser[0] === 1) {
+                    // check to see if we have an image
+                    if (imgFile) { 
+                        // create a new formdata obj for our image
+                        const formData = new FormData();
+                        formData.append("image", imgFile);
+                        // submit fetch
+                        await fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/upload?type=user`, {
+                            method: "POST",
+                            body: formData,
+                            headers: new Headers({
+                                "Authorization": `Bearer ${userContext.token}`
+                            })
+                        })
+                    } else {
+                        toggle();
+                    }
+                    toggle();
+                } else {
+                    setSubmitError(true);
+                    setAlertMessage("The supplied username and/or email address is in use");
+                }               
+            } catch (err) {
+                console.log(err)
+            }
+        }
     };
 
     const handleImageFileSelected = (event) => {
@@ -119,7 +119,7 @@ export default function EditUserProfile({isOpen, toggle}) {
     }
 
     return (
-        <Modal isOpen={isOpen} toggle={toggle} size="xl">
+        <Modal isOpen={isOpen} toggle={toggle} onExit={onExit} size="xl">
             <ModalBody>
                 <Card>
                     <input type="file" hidden ref={imageInput} onChange={handleImageFileSelected} />
@@ -175,6 +175,14 @@ export default function EditUserProfile({isOpen, toggle}) {
                                         <Input type="password" name="edit-profile-confirm-password" id="edit-profile-confirm-password" value={confirmPassword} placeholder="Confirm Password" onChange={e => setConfirmPassword(e.target.value)}/>
                                         <Label htmlFor="edit-profile-confirm-password">Confirm Password:</Label>
                                         {validationErrors.includes("confirmPassword") && (<FormFeedback className="d-block">* Passwords do not match</FormFeedback>)}
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row className="mt-3">
+                                <Col>
+                                    <FormGroup className="form-floating">
+                                        <textarea className="form-control" value={aboutMe} id="edit-about-me" placeholder="About Me" onChange={e => setAboutMe(e.target.value)}></textarea>
+                                        <Label htmlFor="edit-about-me">About Me</Label>
                                     </FormGroup>
                                 </Col>
                             </Row>

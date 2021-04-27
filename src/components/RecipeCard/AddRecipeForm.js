@@ -59,9 +59,9 @@ export default function AddRecipeForm() {
     }
 
     useEffect(() => {
-        if (formSubmitted) {
+        // if (formSubmitted) {
             validateFields();
-        }
+        // }
     }, [recipeType, recipeName, servings, description, cookingDirections, ingredients, prepTime])
 
     const handleImageUpload = (event) => {
@@ -69,7 +69,7 @@ export default function AddRecipeForm() {
         setRecipeImg(URL.createObjectURL(event.target.files[0]));
     }
 
-    const profileImageClicked = () => {
+    const recipeImageClicked = () => {
         inputFile.current.click();
     }
 
@@ -101,7 +101,7 @@ export default function AddRecipeForm() {
     return (
         <Card>
             <input type="file" style={{display: "none"}} ref={inputFile} onChange={handleImageUpload} />
-            <CardImg top src={recipeImg} alt="recipe image" height="400" className="recipe-cover" style={{cursor: "pointer"}} onClick={profileImageClicked}/>
+            <CardImg top src={recipeImg} alt="recipe image" height="400" className="recipe-cover" style={{cursor: "pointer"}} onClick={recipeImageClicked}/>
             <CardBody>
                 <Form onSubmit={handleFormSubmit}>
                     <Row>

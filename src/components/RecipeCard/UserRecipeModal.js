@@ -170,7 +170,7 @@ export default function RecipeModal({isOpen, toggle, recipe, onExit}) {
                 <ModalBody>
                     <Card>
                     <input type="file" style={{display: "none"}} ref={inputFile} onChange={handleImageUpload}/>
-                        <CardImg top src={recipeImg} alt="recipe image" height="400" className="recipe-cover mt-3" style={{cursor: "pointer"}} onClick={recipeImageClicked}/>
+                        <CardImg top src={recipeImg} alt="recipe image" height="400" className="recipe-cover" style={{cursor: "pointer"}} onClick={recipeImageClicked}/>
                         <CardBody>
                             {submitError ? <Alert color="danger">{alertMessage}</Alert> : null}
                             <Form onSubmit={handleFormSubmit}>

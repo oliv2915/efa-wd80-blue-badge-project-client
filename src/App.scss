@@ -32,9 +32,16 @@ footer {
 /*
     Recipe Card Styles
 */
+.recipe-card-image {
+    object-fit: cover;
+    height: 250px;
+    width: 100%;
+}
+
 .recipe-card-body {
     background-color: #444E66;
     color: white;
+    
 }
 /*
     Public Recipe Card Styles
@@ -46,7 +53,7 @@ footer {
 .recipe-cover {
     object-fit: cover;
     width: 100%;
-    height: 400px
+    height: 400px;
 }
 /* 
     Edit Profile Styles

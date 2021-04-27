@@ -62,9 +62,7 @@ export default function RecipeModal({isOpen, toggle, onExit}) {
     }
 
     useEffect(() => {
-        // if (formSubmitted) {
             validateFields();
-        // }
     }, [recipeType, recipeName, servings, description, cookingDirections, ingredients, prepTime, draft, formSubmitted])
 
     const handleImageUpload = (event) => {
@@ -185,8 +183,6 @@ export default function RecipeModal({isOpen, toggle, onExit}) {
                                             <option value="true">Draft</option>
                                             <option value="false">Public</option>
                                         </Input>
-                                        {/* <select className="form-select" id="recipe-status" onChange={e => setDraft(e.target.value)} value={draft}>
-                                        </select> */}
                                         <Label htmlFor="recipe-status">Recipe Status</Label>
                                     </FormGroup>
                                 </Col>

@@ -19,6 +19,7 @@ export default function Profile() {
 
     const [editUserModalIsOpen, setEditUserModalIsOpen] = useState(false);
     const toggleEditUserModal = () => setEditUserModalIsOpen(!editUserModalIsOpen);
+    const reloadWindow = () => window.location.reload();
 
     useEffect(() => {
         if (userContext.user.username === username) { // authorized user
@@ -60,8 +61,8 @@ export default function Profile() {
                         }) : null}
                     </Row>
                 </Col>
-                {editUserModalIsOpen? <EditUserProfile isOpen={editUserModalIsOpen} toggle={toggleEditUserModal} /> : null}
-                {recipeModalIsOpen ? <AddRecipeModal isOpen={recipeModalIsOpen} toggle={toggleRecipeModal} /> : null}
+                {editUserModalIsOpen? <EditUserProfile isOpen={editUserModalIsOpen} toggle={toggleEditUserModal} onExit={reloadWindow} /> : null}
+                {recipeModalIsOpen ? <AddRecipeModal isOpen={recipeModalIsOpen} toggle={toggleRecipeModal} onExit={reloadWindow}/> : null}
             </Row>
         </div>
     )

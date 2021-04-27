@@ -11,7 +11,7 @@ export default function PublicRecipeModal({isOpen, toggle, recipe}) {
             <ModalBody>
                 <Card>
                     <CardImg className="recipe-cover" top src={recipe.recipeImageURL ? recipe.recipeImageURL : genericRecipeImage} alt="recipe image"/>
-                    <CardBody className="recipe-card-body mt-3">
+                    <CardBody className="public-recipe-card-body mt-3">
                         <CardTitle className="recipe-name" tag="h2">{recipe.recipeName}</CardTitle>
                         <CardText style={{textAlign: "center"}}>Description: {recipe.description}</CardText>
                         <CardText style={{textAlign: "center"}}>Category: <b>{recipe.recipeType}</b> | Servings: <b>{recipe.servings}</b> | Time: <b>{recipe.prepTime}</b></CardText>

@@ -67,7 +67,7 @@ export default function RecipeModal({isOpen, toggle, recipe, onExit}) {
 
     useEffect(() => {
         setRecipeId(recipe.id);
-        setRecipeImg(recipe.recipeImg ? recipe.recipeImg : genericRecipeImage);
+        setRecipeImg(recipe.recipeImageURL ? recipe.recipeImageURL : genericRecipeImage);
         setRecipeName(recipe.recipeName);
         setRecipeType(recipe.recipeType);
         setServings(recipe.servings);
@@ -137,7 +137,7 @@ export default function RecipeModal({isOpen, toggle, recipe, onExit}) {
                         const formData = new FormData();
                         formData.append('image', imgFile);
 
-                        await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/upload?type=recipe&recipe=${updateRecipe.recipe.id}`, {
+                        await fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/upload?type=recipe&recipe=${updateRecipe.recipe.id}`, {
                             method: "POST",
                             body: formData,
                             headers: new Headers({
@@ -239,7 +239,7 @@ export default function RecipeModal({isOpen, toggle, recipe, onExit}) {
                                 <Row className="mt-3">
                                     <Col md={12}>
                                         <FormGroup className="form-floating">
-                                            <Input type="text" id="recipe-ingredients" placeholder={ingredients} value={ingredients} onChange={e => setIngredients(e.target.value)}/>
+                                            <textarea className="form-control" id="recipe-ingredients" placeholder={ingredients} value={ingredients} onChange={e => setIngredients(e.target.value)}></textarea>
                                             <Label htmlFor="recipe-ingredients">Ingredients</Label>
                                             {validationErrors.includes("ingredients") && (<FormFeedback className="d-block">* Required and must be comman seprated, no spaces</FormFeedback>)}
                                         </FormGroup>

@@ -9,12 +9,12 @@ export default function Splash() {
         fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/recipe/published`)
             .then(res => res.json())
             .then(setRecipes)
-            .catch(console.log)
+            .catch(console.error)
     }, [])
 
     return (
         <Row>
-           {recipes && recipes.length > 0 ? recipes.map((recipe, idx) => {return <RecipeCard key={idx} recipe={recipe} />}) : null}
+           {recipes && recipes.length > 0 ? recipes.map((recipe, idx) => {return <RecipeCard key={idx} recipe={recipe}/>}) : null}
         </Row>
     )
 }

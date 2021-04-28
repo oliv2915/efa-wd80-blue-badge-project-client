@@ -2,6 +2,7 @@ import React from "react";
 import genericRecipeImage from "../../assets/generic_recipe_img.svg";
 import { Modal, ModalBody, Row, Col, Card, CardTitle, CardText, CardImg, CardBody } from "reactstrap";
 import { useParams } from "react-router-dom";
+import { LinkContainer } from "react-router-bootstrap";
 
 export default function PublicRecipeModal({isOpen, toggle, recipe}) {
     const {username} = useParams();
@@ -30,7 +31,7 @@ export default function PublicRecipeModal({isOpen, toggle, recipe}) {
                         </Row>
                         <br/>
                         <Row>
-                        <CardText style={{textAlign: "center"}}>Recipe submitted by: <b>{username ? username : recipe.user.username}</b></CardText>
+                        <CardText style={{textAlign: "center"}}>Recipe submitted by: <b><a style={{color: "white"}} href={`/profile/${username ? username : recipe.user.username}`}>{username ? username : recipe.user.username}</a></b></CardText>
                         </Row>
                     </CardBody>
                 </Card>

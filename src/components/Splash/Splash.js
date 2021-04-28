@@ -48,12 +48,12 @@ export default function Splash() {
             </Row>
             <Row className="mb-3">
                 <form className="row row-cols-lg-auto align-items-center" onSubmit={handleSearch}>
-                    <div className="col-12">
-                        <Input className="form-control" type="search" id="search" placeholder="Search" value={searchText} onChangeCapture={e => setSearchText(e.target.value)}/>
+                    <div className="col-12"  style={{paddingTop: "2em"}} >
+                        <Input className="form-control" type="search" id="search" placeholder="Search" value={searchText} style={{marginLeft: "30em"}}  onChangeCapture={e => setSearchText(e.target.value)}/>
                     </div>
 
                     <div className="col-12">
-                        <Button type="submit" className="btn btn-primary">Search</Button>
+                        <Button type="submit" className="btn btn-primary" style={{marginLeft: "30em", marginTop: "2.3em" }}   >Search</Button>
                     </div>
                 </form>
             </Row>

@@ -4,7 +4,7 @@ import { Modal, ModalBody, Form, Row, Col, FormGroup, Input, Label, Card, CardIm
 import UserContext from "../../context/UserContext"
 
 
-export default function RecipeModal({isOpen, toggle, recipe, onExit}) {
+export default function RecipeModal({isOpen, toggle, recipe}) {
     const userContext = useContext(UserContext);
     const [recipeId, setRecipeId] = useState(null);
     const [recipeOwner, setRecipeOwner] = useState("");
@@ -72,7 +72,6 @@ export default function RecipeModal({isOpen, toggle, recipe, onExit}) {
         setRecipeType(recipe.recipeType);
         setServings(recipe.servings);
         setPrepTime(recipe.prepTime);
-        console.log(recipe)
         setDraft(recipe.draft);
         setDescription(recipe.description);
         setCookingDirections(recipe.cookingDirections);
@@ -80,8 +79,23 @@ export default function RecipeModal({isOpen, toggle, recipe, onExit}) {
     }, [recipe.id, recipe.recipeImg, recipe.recipeName, recipe.recipeType, recipe.servings, recipe.prepTime, recipe.draft, recipe.description, recipe.cookingDirections, recipe.ingredients]);
 
 
-    const deleteRecipeClicked = (event) => {
-        console.log("delete recipe");
+    const deleteRecipeClicked = async (event) => {
+        try {
+            const deleteResult = await fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/recipe/delete/${recipeId}`, {
+                method: "DELETE",
+                headers: new Headers({
+                    "Content-Type": "application/json",
+                        "Authorization": `Bearer ${userContext.token}` 
+                })
+            }).then(res => {
+                if (res.status === 200) {
+                    toggle();
+                    window.location.reload();
+                }
+            })
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     const recipeImageClicked = () => {
@@ -96,19 +110,6 @@ export default function RecipeModal({isOpen, toggle, recipe, onExit}) {
     const handleFormSubmit = async (event) => {
         event.preventDefault();
         validateFields();
-
-        // console.log(JSON.stringify({
-        //     recipe: {
-        //         recipeName: recipeName,
-        //         recipeType: recipeType,
-        //         servings: servings,
-        //         prepTime: prepTime,
-        //         description: description,
-        //         draft: draft,
-        //         cookingDirections: cookingDirections,
-        //         ingredients: ingredients.split(",")
-        //     }
-        // }))
 
         if (validated) {
             try {
@@ -149,10 +150,12 @@ export default function RecipeModal({isOpen, toggle, recipe, onExit}) {
                                 setAlertMessage("There was an issue uploading your photo.");
                             } else {
                                 toggle();
+                                window.location.reload()
                             }
                         })
                     } else {
                         toggle();
+                        window.location.reload()
                     }
                 } else {
                     setSubmitError(true);
@@ -166,7 +169,7 @@ export default function RecipeModal({isOpen, toggle, recipe, onExit}) {
     }
 
     return (
-        <Modal isOpen={isOpen} toggle={toggle} onExit={onExit} size="xl">
+        <Modal isOpen={isOpen} toggle={toggle} size="xl">
                 <ModalBody>
                     <Card>
                     <input type="file" style={{display: "none"}} ref={inputFile} onChange={handleImageUpload}/>

@@ -8,11 +8,13 @@ export default function Splash() {
     const [searchText, setSearchText] = useState("");
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/recipe/published`)
-            .then(res => res.json())
-            .then(setRecipes)
-            .catch(console.error)
-    }, [])
+        if (!searchText) {
+            fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/recipe/published`)
+                .then(res => res.json())
+                .then(setRecipes)
+                .catch(console.error)
+        }
+    }, [searchText])
 
     useEffect(() => {
 
@@ -20,7 +22,6 @@ export default function Splash() {
 
     const handleSearch = (event) => {
         event.preventDefault()
-        console.log(event)
         let searchQueryArray = searchText.split(",")
         let searchQueryString = "?"
         searchQueryArray.map((string, idx) => {

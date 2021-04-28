@@ -9,12 +9,12 @@ export const UserContextProvider = ({children}) => {
     const [loading, setLoading] = useState(false);
         
     useEffect(() => {
-        setToken(localStorage.getItem("token"));
+        setToken(sessionStorage.getItem("token"));
     }, [])
     
     useEffect(() => {
         if (token) {
-            localStorage.setItem("token", token);
+            sessionStorage.setItem("token", token);
 
             fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/user/profile`, {
                 method: "GET",
@@ -25,7 +25,7 @@ export const UserContextProvider = ({children}) => {
                     setToken(null);
                     setIsAuth(false);
                     setLoading(true);
-                    localStorage.removeItem("token");
+                    sessionStorage.removeItem("token");
                 }
                 return res.json();
             }).then(data => {
@@ -40,7 +40,7 @@ export const UserContextProvider = ({children}) => {
             setUser({});
             setIsAuth(false);
             setLoading(true);
-            localStorage.removeItem("token");
+            sessionStorage.removeItem("token");
         }
     }, [token]);
 

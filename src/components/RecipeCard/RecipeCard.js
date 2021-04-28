@@ -6,7 +6,7 @@ import PublicRecipeModal from "./PublicRecipeModal";
 import UserContext from "../../context/UserContext";
 import { useParams } from "react-router-dom";
 
-export default function Recipe({recipe, onExit}) {
+export default function Recipe({recipe}) {
     const {username} = useParams();
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const toggle = () => setModalIsOpen(!modalIsOpen);
@@ -22,8 +22,8 @@ export default function Recipe({recipe, onExit}) {
                 </CardBody>
             </Card>
             {/* If user isAuth, show UserRecipeModal else PublicRecipeModal */}
-            {userContext.isAuth && userContext.user.username === username ? <UserRecipeModal isOpen={modalIsOpen} toggle={toggle} recipe={recipe} onExit={onExit} /> :
-                                    <PublicRecipeModal isOpen={modalIsOpen} toggle={toggle} recipe={recipe}/>}
+            {userContext.isAuth && userContext.user.username === username ? <UserRecipeModal isOpen={modalIsOpen} toggle={toggle} recipe={recipe} /> :
+                                    <PublicRecipeModal isOpen={modalIsOpen} toggle={toggle}recipe={recipe}/>}
         </Col>
     )
 }

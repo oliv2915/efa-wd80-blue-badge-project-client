@@ -26,13 +26,13 @@ export default function Profile() {
             fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/recipe/all`, {
                 method: "GET",
                 headers: new Headers({"Authorization": `Bearer ${userContext.token}`})
-            }).then(res => res.json()).then(setRecipes).catch(console.log);
+            }).then(res => res.json()).then(setRecipes).catch(console.error);
         } else { // public visitor
             fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/user/profile/${username}`)
             .then(res => res.json()).then(data => {
                 setPublicUser(data.user);
                 setRecipes(data.recipes);
-            }).catch(console.log);
+            }).catch(console.error);
         }
     }, [userContext.token, userContext.isAuth, userContext.user.username, username]);
 
@@ -57,7 +57,7 @@ export default function Profile() {
                 <Col lg={9}>
                     <Row>
                         {recipes && recipes.length > 0 ? recipes.map((recipe, idx) => {
-                            return <RecipeCard key={idx} recipe={recipe} onExit={reloadWindow} />
+                            return <RecipeCard key={idx} recipe={recipe}/>
                         }) : null}
                     </Row>
                 </Col>

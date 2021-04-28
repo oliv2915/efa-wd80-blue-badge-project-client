@@ -47,15 +47,17 @@ export default function Splash() {
                 <img className="splash-hero" src={splashHero} width="100%" alt="man prepping ingredients to cook"/>
             </Row>
             <Row className="mb-3">
-                <form className="row row-cols-lg-auto align-items-center" onSubmit={handleSearch}>
-                    <div className="col-12"  style={{paddingTop: "2em"}} >
-                        <Input className="form-control" type="search" id="search" placeholder="Search" value={searchText} style={{marginLeft: "30em"}}  onChangeCapture={e => setSearchText(e.target.value)}/>
-                    </div>
+                <div className="col-md-6 offset-md-4">
+                    <form className="row" onSubmit={handleSearch}>
+                        <div className="col-6">
+                            <Input className="splash-search-field form-control" type="search" id="search" placeholder="Search" value={searchText} onChangeCapture={e => setSearchText(e.target.value)}/>
+                        </div>
 
-                    <div className="col-12">
-                        <Button type="submit" className="btn btn-primary" style={{marginLeft: "30em", marginTop: "2.3em" }}   >Search</Button>
-                    </div>
-                </form>
+                        <div className="col-1">
+                            <Button type="submit" className="btn btn-primary">Search</Button>
+                        </div>
+                    </form>
+                </div>
             </Row>
             <Row>
                 {recipes && recipes.length > 0 ? recipes.map((recipe, idx) => {return <RecipeCard key={idx} recipe={recipe}/>}) : null}

@@ -14,20 +14,18 @@ before this import statement. If not placed before
 but after, bootstrap styles will take affect.
 */
 @import "~bootstrap/scss/bootstrap.scss";
-
 /*
     Navbar Styles
 */
-.navbar {
-    height: 80px;
-}
+// .navbar {
+//     height: 80px;
+// }
 footer {
     background-color: white;
     margin-top: 5px;
 }
-
 .nav-item {
-    margin-right: 5px;
+    margin-left: 10px;
 }
 /*
     Recipe Card Styles
@@ -37,7 +35,6 @@ footer {
     height: 250px;
     width: 100%;
 }
-
 .recipe-card-body {
     background-color: #444E66;
     color: white;
@@ -63,18 +60,20 @@ footer {
     width: 100%;
     height: 400px;
 }
-
 .public-recipe-card-body {
     background-color: #444E66;
     color: white;
 }
-
 /*
     Splash
 */
-
 .splash-hero {
     object-fit: cover;
     width: 100%;
     height: auto;
+}
+
+.splash-search-field {
+    background-color: #F2B6A9;
+    border: 0px;
 }

@@ -72,7 +72,7 @@ export default function SignUp() {
         if (validated) { // fields have passed all requirmenets (true), submit data
             try {
                 // submit user data to server
-                const newUser = await fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}user/signup`, {
+                const newUser = await fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/user/signup`, {
                     method: "POST",
                     body: JSON.stringify({
                         user:{firstName, lastName, username, email, password}
@@ -90,7 +90,7 @@ export default function SignUp() {
                         const formData = new FormData();
                         formData.append("image", profileImage);
                         // submit fetch
-                        await fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}upload?type=user`, {
+                        await fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/upload?type=user`, {
                             method: "POST",
                             body: formData,
                             headers: new Headers({

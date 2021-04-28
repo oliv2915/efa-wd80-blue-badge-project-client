@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {Row } from "reactstrap";
 import RecipeCard from "../RecipeCard/RecipeCard";
-import API_URL from "../../helpers/environment";
 
 export default function Splash() {
     const [recipes, setRecipes] = useState();
 
     useEffect(() => {
-        fetch(`${API_URL}/recipe/published`)
+        fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/recipe/published`)
             .then(res => res.json())
             .then(setRecipes)
             .catch(console.log)

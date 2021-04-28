@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext, useRef } from "react"
 import genericRecipeImage from "../../assets/generic_recipe_img.svg";
 import { Modal, ModalBody, Form, Row, Col, FormGroup, Input, Label, Card, CardImg, CardBody, Button, Alert, FormFeedback } from "reactstrap"
 import UserContext from "../../context/UserContext"
-import API_URL from "../../helpers/environment";
 
 
 export default function RecipeModal({isOpen, toggle, recipe, onExit}) {
@@ -113,7 +112,7 @@ export default function RecipeModal({isOpen, toggle, recipe, onExit}) {
 
         if (validated) {
             try {
-                const updateRecipe = await fetch(`${API_URL}/recipe/update/${recipeId}`, {
+                const updateRecipe = await fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/recipe/update/${recipeId}`, {
                     method: "PUT",                    
                     body: JSON.stringify({
                         recipe: {
@@ -138,7 +137,7 @@ export default function RecipeModal({isOpen, toggle, recipe, onExit}) {
                         const formData = new FormData();
                         formData.append('image', imgFile);
 
-                        await fetch(`${API_URL}/upload?type=recipe&recipe=${updateRecipe.recipe.id}`, {
+                        await fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/upload?type=recipe&recipe=${updateRecipe.recipe.id}`, {
                             method: "POST",
                             body: formData,
                             headers: new Headers({

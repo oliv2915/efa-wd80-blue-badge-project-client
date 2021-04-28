@@ -7,7 +7,6 @@ import UserContext from "../../context/UserContext"
 export default function RecipeModal({isOpen, toggle, recipe}) {
     const userContext = useContext(UserContext);
     const [recipeId, setRecipeId] = useState(null);
-    const [recipeOwner, setRecipeOwner] = useState("");
     const [recipeImg, setRecipeImg] = useState("")
     const [recipeName, setRecipeName] = useState("");
     const [recipeType, setRecipeType] = useState("");
@@ -76,12 +75,12 @@ export default function RecipeModal({isOpen, toggle, recipe}) {
         setDescription(recipe.description);
         setCookingDirections(recipe.cookingDirections);
         setIngredients(recipe.ingredients.toString());
-    }, [recipe.id, recipe.recipeImg, recipe.recipeName, recipe.recipeType, recipe.servings, recipe.prepTime, recipe.draft, recipe.description, recipe.cookingDirections, recipe.ingredients]);
+    }, [recipe.id, recipe.recipeImageURL, recipe.recipeName, recipe.recipeType, recipe.servings, recipe.prepTime, recipe.draft, recipe.description, recipe.cookingDirections, recipe.ingredients]);
 
 
-    const deleteRecipeClicked = async (event) => {
+    const deleteRecipeClicked = () => {
         try {
-            const deleteResult = await fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/recipe/delete/${recipeId}`, {
+            fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/recipe/delete/${recipeId}`, {
                 method: "DELETE",
                 headers: new Headers({
                     "Content-Type": "application/json",

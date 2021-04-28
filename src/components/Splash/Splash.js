@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Form, Row, Col, FormGroup, Input, Label, Button} from "reactstrap";
+import {Row, Button, Input} from "reactstrap";
 import RecipeCard from "../RecipeCard/RecipeCard";
 import splashHero from "../../assets/mealBOX_SplashHero.jpg"
 
@@ -25,10 +25,10 @@ export default function Splash() {
         let searchQueryArray = searchText.split(",")
         let searchQueryString = "?"
         searchQueryArray.map((string, idx) => {
-            if (idx == 0) {
-                searchQueryString += `ingredients[]=${string}`
+            if (idx === 0) {
+                return searchQueryString += `ingredients[]=${string}`
             } else {
-                searchQueryString += `&ingredients[]=${string}`
+                return searchQueryString += `&ingredients[]=${string}`
             }
         })
         try {
@@ -49,11 +49,11 @@ export default function Splash() {
             <Row className="mb-3">
                 <form className="row row-cols-lg-auto align-items-center" onSubmit={handleSearch}>
                     <div className="col-12">
-                        <input className="form-control" type="search" id="search" placeholder="Search" value={searchText} onChangeCapture={e => setSearchText(e.target.value)}/>
+                        <Input className="form-control" type="search" id="search" placeholder="Search" value={searchText} onChangeCapture={e => setSearchText(e.target.value)}/>
                     </div>
 
                     <div className="col-12">
-                        <button type="submit" className="btn btn-primary">Search</button>
+                        <Button type="submit" className="btn btn-primary">Search</Button>
                     </div>
                 </form>
             </Row>

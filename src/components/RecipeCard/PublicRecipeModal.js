@@ -2,7 +2,6 @@ import React from "react";
 import genericRecipeImage from "../../assets/generic_recipe_img.svg";
 import { Modal, ModalBody, Row, Col, Card, CardTitle, CardText, CardImg, CardBody } from "reactstrap";
 import { useParams } from "react-router-dom";
-import { LinkContainer } from "react-router-bootstrap";
 
 export default function PublicRecipeModal({isOpen, toggle, recipe}) {
     const {username} = useParams();

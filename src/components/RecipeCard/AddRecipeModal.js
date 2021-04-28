@@ -189,7 +189,7 @@ export default function RecipeModal({isOpen, toggle, onExit}) {
                             <Row className="mt-3">
                                 <Col md={12}>
                                     <FormGroup className="form-floating">
-                                        <textarea className="form-control" value={description} id="recipe-description" placeholder="Description" onChange={e => setDescription(e.target.value)}></textarea>
+                                        <textarea style={{height: "100px"}} className="form-control" value={description} id="recipe-description" placeholder="Description" onChange={e => setDescription(e.target.value)}></textarea>
                                         <Label htmlFor="recipe-description">Description</Label>
                                         {validationErrors.includes("description") && (<FormFeedback className="d-block">* Required</FormFeedback>)}
                                     </FormGroup>
@@ -199,7 +199,7 @@ export default function RecipeModal({isOpen, toggle, onExit}) {
                             <Row className="mt-3">
                                 <Col md={12}>
                                     <FormGroup className="form-floating">
-                                        <textarea className="form-control" value={cookingDirections} id="recipe-cooking-directions" placeholder="Cooking Directions" onChange={e => setCookingDirections(e.target.value)}></textarea>
+                                        <textarea style={{height: "150px"}} className="form-control" value={cookingDirections} id="recipe-cooking-directions" placeholder="Cooking Directions" onChange={e => setCookingDirections(e.target.value)}></textarea>
                                         <Label htmlFor="recipe-cooking-directions">Cooking Directions</Label>
                                         {validationErrors.includes("cookingDirections") && (<FormFeedback className="d-block">* Required</FormFeedback>)}
                                     </FormGroup>
@@ -208,7 +208,8 @@ export default function RecipeModal({isOpen, toggle, onExit}) {
                             <Row className="mt-3">
                                 <Col md={12}>
                                     <FormGroup className="form-floating">
-                                        <Input type="text" id="recipe-ingredients" placeholder="Ingredients" value={ingredients} onChange={e => setIngredients(e.target.value)}/>
+                                        {/* <Input type="textarea" value={ingredients} id="recipe-ingredients" placeholder="Ingredients" onChange={e => setIngredients(e.target.value)} /> */}
+                                        <textarea style={{height: "150px"}} className="form-control" value={ingredients} id="recipe-ingredients" placeholder="Ingredients" onChange={e => setIngredients(e.target.value)}></textarea>
                                         <Label htmlFor="recipe-ingredients">Ingredients</Label>
                                         {validationErrors.includes("ingredients") && (<FormFeedback className="d-block">* Required and must be comman seprated, no spaces</FormFeedback>)}
                                     </FormGroup>

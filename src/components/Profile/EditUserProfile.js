@@ -2,7 +2,6 @@ import React, { useRef, useState, useContext, useEffect } from "react";
 import genericeProfileImg from "../../assets/generic_profile_img.svg"
 import { Input, Modal, ModalBody, Card, CardImg, CardBody, Form, Row, Col, FormGroup, Button, Alert, Label, FormFeedback } from "reactstrap";
 import UserContext from "../../context/UserContext";
-import API_URL from "../../helpers/environment";
 
 export default function EditUserProfile({isOpen, toggle, onExit}) {
     const userContext = useContext(UserContext);
@@ -70,7 +69,7 @@ export default function EditUserProfile({isOpen, toggle, onExit}) {
         if (validated) { // fields have passed all requirmenets (true), submit data
             try {
                 // submit user data to server
-                const updatedUser = await fetch(`${API_URL}/user/update`, {
+                const updatedUser = await fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/user/update`, {
                     method: "PUT",
                     body: JSON.stringify({
                         user:{firstName, lastName, username, email, password, aboutMe}
@@ -89,7 +88,7 @@ export default function EditUserProfile({isOpen, toggle, onExit}) {
                         const formData = new FormData();
                         formData.append("image", imgFile);
                         // submit fetch
-                        await fetch(`${API_URL}/upload?type=user`, {
+                        await fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/upload?type=user`, {
                             method: "POST",
                             body: formData,
                             headers: new Headers({

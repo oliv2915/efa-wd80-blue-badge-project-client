@@ -2,7 +2,6 @@ import React, {useContext, useEffect, useState} from "react";
 import {useHistory} from "react-router-dom"
 import {Form, Row, Col, FormGroup, Label, Input, Button, Container, Alert, FormFeedback} from "reactstrap";
 import UserContext from "../../context/UserContext";
-import API_URL from "../../helpers/environment";
 
 export default function Login() {
     const userContext = useContext(UserContext);
@@ -49,7 +48,7 @@ export default function Login() {
 
         if (validated) {
             try {
-                const loginUser = await fetch(`${API_URL}/user/login`, {
+                const loginUser = await fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/user/login`, {
                     method: "POST",
                     body: JSON.stringify({
                         user:{username, password}

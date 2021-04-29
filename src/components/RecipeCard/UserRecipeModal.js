@@ -7,7 +7,6 @@ import UserContext from "../../context/UserContext"
 export default function RecipeModal({isOpen, toggle, recipe}) {
     const userContext = useContext(UserContext);
     const [recipeId, setRecipeId] = useState(null);
-    const [recipeOwner, setRecipeOwner] = useState("");
     const [recipeImg, setRecipeImg] = useState("")
     const [recipeName, setRecipeName] = useState("");
     const [recipeType, setRecipeType] = useState("");
@@ -76,12 +75,12 @@ export default function RecipeModal({isOpen, toggle, recipe}) {
         setDescription(recipe.description);
         setCookingDirections(recipe.cookingDirections);
         setIngredients(recipe.ingredients.toString());
-    }, [recipe.id, recipe.recipeImg, recipe.recipeName, recipe.recipeType, recipe.servings, recipe.prepTime, recipe.draft, recipe.description, recipe.cookingDirections, recipe.ingredients]);
+    }, [recipe.id, recipe.recipeImageURL, recipe.recipeName, recipe.recipeType, recipe.servings, recipe.prepTime, recipe.draft, recipe.description, recipe.cookingDirections, recipe.ingredients]);
 
 
-    const deleteRecipeClicked = async (event) => {
+    const deleteRecipeClicked = () => {
         try {
-            const deleteResult = await fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/recipe/delete/${recipeId}`, {
+            fetch(`${process.env.REACT_APP_API_SERVER_BASE_URL}/recipe/delete/${recipeId}`, {
                 method: "DELETE",
                 headers: new Headers({
                     "Content-Type": "application/json",
@@ -91,6 +90,9 @@ export default function RecipeModal({isOpen, toggle, recipe}) {
                 if (res.status === 200) {
                     toggle();
                     window.location.reload();
+                } else if (res.status === 400) {
+                    setSubmitError(true)
+                    setAlertMessage("There was a problem updating your recipe.")
                 }
             })
         } catch (err) {
@@ -223,7 +225,7 @@ export default function RecipeModal({isOpen, toggle, recipe}) {
                                 <Row className="mt-3">
                                     <Col md={12}>
                                         <FormGroup className="form-floating">
-                                            <textarea className="form-control" value={description} id="recipe-description" placeholder={description} onChange={e => setDescription(e.target.value)}></textarea>
+                                            <textarea style={{height: "100px"}} className="form-control" value={description} id="recipe-description" placeholder={description} onChange={e => setDescription(e.target.value)}></textarea>
                                             <Label htmlFor="recipe-description">Description</Label>
                                             {validationErrors.includes("description") && (<FormFeedback className="d-block">* Required</FormFeedback>)}
                                         </FormGroup>
@@ -233,7 +235,7 @@ export default function RecipeModal({isOpen, toggle, recipe}) {
                                 <Row className="mt-3">
                                     <Col md={12}>
                                         <FormGroup className="form-floating">
-                                            <textarea className="form-control" value={cookingDirections} id="recipe-cooking-directions" placeholder={cookingDirections} onChange={e => setCookingDirections(e.target.value)}></textarea>
+                                            <textarea style={{height: "150px"}} className="form-control" value={cookingDirections} id="recipe-cooking-directions" placeholder={cookingDirections} onChange={e => setCookingDirections(e.target.value)}></textarea>
                                             <Label htmlFor="recipe-cooking-directions">Cooking Directions</Label>
                                             {validationErrors.includes("cookingDirections") && (<FormFeedback className="d-block">* Required</FormFeedback>)}
                                         </FormGroup>
@@ -242,7 +244,7 @@ export default function RecipeModal({isOpen, toggle, recipe}) {
                                 <Row className="mt-3">
                                     <Col md={12}>
                                         <FormGroup className="form-floating">
-                                            <textarea className="form-control" id="recipe-ingredients" placeholder={ingredients} value={ingredients} onChange={e => setIngredients(e.target.value)}></textarea>
+                                            <textarea style={{height: "150px"}} className="form-control" value={ingredients} id="recipe-ingredients" placeholder={ingredients} onChange={e => setIngredients(e.target.value)}></textarea>
                                             <Label htmlFor="recipe-ingredients">Ingredients</Label>
                                             {validationErrors.includes("ingredients") && (<FormFeedback className="d-block">* Required and must be comman seprated, no spaces</FormFeedback>)}
                                         </FormGroup>

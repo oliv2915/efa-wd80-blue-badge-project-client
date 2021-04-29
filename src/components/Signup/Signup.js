@@ -19,7 +19,6 @@ export default function SignUp() {
     const [validated, setValidated] = useState(false);
     const [submitError, setSubmitError] = useState(false);
     const [alertMessage, setAlertMessage] = useState([]);
-    const [formSubmitted, setFormSubmitted] = useState(false);
 
     const validateFields = () => {
         const errors = [];
@@ -53,22 +52,14 @@ export default function SignUp() {
     }
 
     useEffect(() => {
-        // if (formSubmitted) {
             validateFields();
-        // }
-    }, [firstName, lastName, username, email, password, confirmPassword, formSubmitted])
+    }, [firstName, lastName, username, email, password, confirmPassword])
 
       
     const handleSubmit = async (event) => {
         event.preventDefault();
         validateFields();
-        setFormSubmitted(true);
-        /*
-        This will handle two things. End result, we have newly created user
-        with a profileImage attached to there profile.
-        1 - create the user in the database
-        2 - upload image file
-        */
+        
         if (validated) { // fields have passed all requirmenets (true), submit data
             try {
                 // submit user data to server
@@ -78,7 +69,16 @@ export default function SignUp() {
                         user:{firstName, lastName, username, email, password}
                     }),
                     headers: new Headers({"Content-Type":"application/json"})
-                }).then(res => res.json())
+                }).then(res => {
+                    console.log(res.status)
+                    if (res.status === 400) {
+                        setSubmitError(true);
+                        setAlertMessage("The supplied username and/or email address is in use")
+                        return res.json()
+                    } else {
+                        return res.json()
+                    }
+                })
                 // check to see if we have a returned user obj
                 if ("sessionToken" in newUser) {
                     // set the userContext token
@@ -99,9 +99,6 @@ export default function SignUp() {
                         })
                     }
                     return history.push(`/profile/${newUser.user.username}`)
-                } else {
-                    setSubmitError(true);
-                    setAlertMessage("The supplied username and/or email address is in use");
                 }                
             } catch (err) {
                 console.log(err)

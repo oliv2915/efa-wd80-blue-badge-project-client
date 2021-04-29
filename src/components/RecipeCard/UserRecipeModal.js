@@ -90,6 +90,9 @@ export default function RecipeModal({isOpen, toggle, recipe}) {
                 if (res.status === 200) {
                     toggle();
                     window.location.reload();
+                } else if (res.status === 400) {
+                    setSubmitError(true)
+                    setAlertMessage("There was a problem updating your recipe.")
                 }
             })
         } catch (err) {
